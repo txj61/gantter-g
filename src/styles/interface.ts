@@ -6,46 +6,50 @@
  * @Description:
  */
 
-
 export interface IStyles {
   // 字体
-  fontFamily: string
+  readonly fontFamily: string;
   // 字号
-  fontSize: number
+  readonly fontSize: number;
   // 字体粗细
-  fontWeight: 'normal' | 'bold' | 'bolder' | 'lighter' | number
+  readonly fontWeight: 'normal' | 'bold' | 'bolder' | 'lighter' | number;
 
   // 滚动条宽度
-  scrollWeight: number
+  readonly scrollWeight: number;
   // 滚动条圆角
-  scrollBorderRadius: number
+  readonly scrollBorderRadius: number;
   // 滚动条最小滑块长度
-  scrollMinThumbLen: number
+  readonly scrollMinThumbLen: number;
 
   // 表格边框
-  tableBorderSize: number
+  readonly tableBorderSize: number;
   // 表头分割线
-  tableHeaderDividerSize?: number
+  readonly tableHeaderDividerSize?: number;
   // 表头下边线
-  tableHeaderBottomBorderSize?: number
+  readonly tableHeaderBottomBorderSize?: number;
   // 表头字号
-  tableHeaderFontSize?: number
+  readonly tableHeaderFontSize?: number;
   // 表格横向分割线
-  tableRowDividerSize: number
+  readonly tableRowDividerSize: number;
   // 表格纵向分割线
-  tableColDividerSize: number
+  readonly tableColDividerSize: number;
   // 表头下分割线
-  tableHeaderRowDividerSize: number
+  readonly tableHeaderRowDividerSize: number;
   // 表头横向分割线
-  tableHeaderColDividerSize: number
+  readonly tableHeaderColDividerSize: number;
   // 表格单元格默认宽度
-  tableCellWidth: number
+  readonly tableCellWidth: number;
   // 表格单元格高度
-  tableCellHeight: number
+  readonly tableCellHeight: number;
   // 表格单元格字号
-  tableCellFontSize?: number
+  readonly tableCellFontSize?: number;
   // 表格字体粗细
-  tableCellFontWeight?: 'normal' | 'bold' | 'bolder' | 'lighter' | number
+  readonly tableCellFontWeight?:
+    | 'normal'
+    | 'bold'
+    | 'bolder'
+    | 'lighter'
+    | number;
   // 表格单元格padding
-  tableCellPadding?: number
+  readonly tableCellPadding?: number;
 }

@@ -8,36 +8,35 @@
 
 export interface ITheme {
   // 通用
-  backgroundColor: string
-  borderColor: string
-  fontColor: string
+  readonly backgroundColor: string;
+  readonly borderColor: string;
+  readonly fontColor: string;
 
   // 滚动条滑道颜色
-  scrollBarSlideColor: string
+  readonly scrollBarSlideColor: string;
   // 滚动条滑块颜色
-  scrollBarThumbColor: string
+  readonly scrollBarThumbColor: string;
   // 鼠标移入滑块颜色
-  scrollBarThumbHoverColor: string
+  readonly scrollBarThumbHoverColor: string;
   // 鼠标按下滑块颜色
-  scrollBarThumbDownColor: string
+  readonly scrollBarThumbDownColor: string;
 
   // 表头分割线
-  tableHeaderDividerColor?: string
+  readonly tableHeaderDividerColor?: string;
   // 表头下边线
-  tableHeaderBottomBorderColor?: string
+  readonly tableHeaderBottomBorderColor?: string;
   // 表头背景
-  tableHeaderBackgroundColor: string
+  readonly tableHeaderBackgroundColor: string;
   // 表头文字
-  tableHeaderFontColor?: string
+  readonly tableHeaderFontColor?: string;
   // 表格横向分割线
-  tableRowDividerColor?: string
+  readonly tableRowDividerColor?: string;
   // 表格纵向分割线
-  tableColDividerColor?: string
+  readonly tableColDividerColor?: string;
   // 表格奇数行背景
-  tableOddBackgroundColor: string
+  readonly tableOddBackgroundColor: string;
   // 表格偶数行背景
-  tableEvenBackgroundColor: string
+  readonly tableEvenBackgroundColor: string;
   // 表格文字
-  tableCellFontColor?: string
-
+  readonly tableCellFontColor?: string;
 }

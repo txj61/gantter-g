@@ -5,11 +5,11 @@
  * @LastEditors: Anthan
  * @Description:甘特图表格
  */
-import { Group } from '@antv/g'
+import { Group } from '@antv/g';
+import { IProps } from './interface';
 
 export default class GantterTable extends Group {
-
-  constructor(){
-    super()
+  constructor({ style }: IProps) {
+    super({ style });
   }
 }

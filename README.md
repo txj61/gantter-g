@@ -13,6 +13,7 @@
 
 ```
 yarn dev
+yarn dev story
 ```
 
 运行测试用例

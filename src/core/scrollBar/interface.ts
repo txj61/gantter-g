@@ -5,24 +5,24 @@
  * @LastEditors: Anthan
  * @Description:
  */
-import { BaseStyleProps } from '@antv/g'
+import { BaseStyleProps } from '@antv/g';
 
 export interface IProp {
-  isVertical?: boolean
-  scrollAreaLength: number
-  scrollTotalLength: number
-  minThumbLen?: number
-  position?: number
-  style: BaseStyleProps
+  isVertical?: boolean;
+  scrollAreaLength: number;
+  scrollTotalLength: number;
+  minThumbLen?: number;
+  position?: number;
+  style: BaseStyleProps;
 }
 
 export interface IParams {
-  areaLength: number
-  totalLength: number
-  positonX: number
-  positonY: number
+  areaLength: number;
+  totalLength: number;
+  positonX: number;
+  positonY: number;
 }
 
 export interface IEmitEvent {
-  onScroll: (params: IParams) => void
+  onScroll?: ((params: IParams) => void) | null;
 }

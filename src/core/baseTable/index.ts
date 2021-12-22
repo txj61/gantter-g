@@ -5,87 +5,128 @@
  * @LastEditors: Anthan
  * @Description:左侧表格
  */
-import { Group } from '@antv/g'
-import type { Group as IGroup } from '@antv/g'
-import { IProps, IColumn } from './interface'
-import { BaseRow, BaseHeader } from '@/core'
-import { styles } from '@/store'
+import { Group, Rect } from '@antv/g';
+import type { Group as IGroup } from '@antv/g';
+import { IProps, IColumn, IEmitEvent } from './interface';
+import { BaseRow, BaseHeader } from '@/core';
+import { styles } from '@/store';
 
 export default class BaseTable extends Group {
+  public totalHeight: number = 0;
 
-  private columns: IColumn[]
+  private readonly columns: IColumn[];
 
-  private data: { [key: string]: any }[]
+  private readonly data: { [key: string]: any }[];
 
-  private width: number
+  private readonly width: number;
 
-  private height: number
+  private readonly height: number;
 
-  private rowHeight: number = styles.tableCellHeight
+  private readonly rowHeight: number = styles.tableCellHeight;
 
-  private header!: IGroup
+  private header!: IGroup;
 
-  private content!: IGroup
+  private content!: IGroup;
 
-  private rows: IGroup[] = []
+  private readonly rows: IGroup[] = [];
 
-  public totalHeight: number = 0
+  private _scrollTop: number = 0;
 
-  private _scrollTop: number = 0
+  private _emitEvents: IEmitEvent = {
+    onScroll: undefined,
+  };
 
-  constructor({ columns, data, width, height }: IProps){
-    super()
+  constructor({ columns, data, style }: IProps) {
+    super({ style });
 
-    this.columns = columns || []
-    this.data = data || []
-    this.width = width
-    this.height = height
+    this.columns = columns || [];
+    this.data = data || [];
+    this.width = this.style.clipPath.style.width;
+    this.height = this.style.clipPath.style.height;
 
-    this.renderRows()
-    this.renderHeader()
+    this.renderRows();
+    this.renderHeader();
 
-    this.bindEvent()
+    this.bindEvent();
   }
 
-  public scroll(v: number){
-    this._scrollTop = v
-    this.content.style.y = this._scrollTop
+  public set tableScrollTop(v: number) {
+    this._scrollTop = v;
+    this.rows.forEach((item, index) => {
+      item.style.y = this.rowHeight * index + this.tableScrollTop;
+    });
+    // this.content.style.y = this._scrollTop
   }
 
-  public renderHeader(){
+  public get tableScrollTop(): number {
+    return this._scrollTop;
+  }
+
+  public emitEvent(
+    eventName: keyof IEmitEvent,
+    event: IEmitEvent[keyof IEmitEvent],
+  ) {
+    this._emitEvents[eventName] = event;
+  }
+
+  public renderHeader() {
     this.header = new BaseHeader({
-      columns: this.columns
-    })
-    this.appendChild(this.header)
+      columns: this.columns,
+    });
+    this.appendChild(this.header);
   }
 
-  public renderRows(){
+  public renderRows() {
     this.content = new Group({
       style: {
-        y: this.rowHeight
-      }
-    })
-    this.appendChild(this.content)
+        y: this.rowHeight,
+        clipPath: new Rect({
+          style: {
+            width: this.width,
+            height: this.height,
+          },
+        }),
+      },
+    });
 
     this.data.forEach((item, index) => {
-      this.rows.push(new BaseRow({
-        columns: this.columns,
-        data: item,
-        isOdd: !!(index % 2),
-        style: {
-          x: 0,
-          y: this.rowHeight * index
-        },
-      }))
-      this.content.appendChild(this.rows[index])
-      this.totalHeight += this.rowHeight
-    })
+      this.rows.push(
+        new BaseRow({
+          columns: this.columns,
+          data: item,
+          isOdd: Boolean(index % 2),
+          style: {
+            x: 0,
+            y: this.rowHeight * index + this.tableScrollTop,
+          },
+        }),
+      );
+      this.content.appendChild(this.rows[index]);
+      this.totalHeight += this.rowHeight;
+    });
+
+    this.appendChild(this.content);
   }
 
-  private bindEvent(){
-    this.content.addEventListener('wheel', () => {
-      console.log('asdsa')
+  private bindEvent() {
+    this.content.addEventListener('wheel', this.wheelEvent.bind(this));
+  }
 
-    })
+  private wheelEvent(event: any) {
+    if (this.tableScrollTop >= 0 && event.deltaY < 0) {
+      this.tableScrollTop = 0;
+    } else if (
+      this.tableScrollTop <= -(this.totalHeight - this.height) &&
+      event.deltaY > 0
+    ) {
+      this.tableScrollTop = -(this.totalHeight - this.height);
+    } else {
+      this.tableScrollTop -= event.deltaY / 2;
+      if (this._emitEvents.onScroll) {
+        this._emitEvents.onScroll({
+          positonY: this.tableScrollTop,
+        });
+      }
+    }
   }
 }
