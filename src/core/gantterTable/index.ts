@@ -7,9 +7,31 @@
  */
 import { Group } from '@antv/g';
 import { IProps } from './interface';
+import { IGantterReplaceKeys, IColumn, IData } from '@/common/interface'
 
 export default class GantterTable extends Group {
-  constructor({ style }: IProps) {
+
+  private replaceKey: Required<IGantterReplaceKeys> = {
+    list: 'list',
+    start: 'start',
+    end: 'end',
+    title: 'title',
+    content: 'content'
+  }
+
+  private columns: IColumn[] = []
+
+  private data: IData[] = []
+
+  constructor({ replaceKey, style, columns, data }: IProps) {
     super({ style });
+
+    this.replaceKey = {
+      ...this.replaceKey,
+      ...replaceKey
+    }
+    this.columns = columns || []
+    this.data = data || []
+
   }
 }

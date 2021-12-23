@@ -8,7 +8,7 @@
 import { Group } from '@antv/g'
 import { BaseCell } from '@/core'
 import { IProps } from './interface'
-import { IColumn } from '@/core/baseTable/interface'
+import { IColumn } from '@/common/interface'
 import { theme, styles } from '@/store'
 
 export default class BaseRow extends Group {

@@ -9,7 +9,7 @@ import { Group, Line } from '@antv/g'
 import { BaseCell } from '@/core'
 import { IProps } from './interface'
 import { ILine } from '@/common/interface'
-import { IColumn } from '@/core/baseTable/interface'
+import { IColumn } from '@/common/interface'
 import { theme, styles } from '@/store'
 
 export default class BaseRow extends Group {

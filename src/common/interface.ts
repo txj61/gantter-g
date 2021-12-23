@@ -24,3 +24,20 @@ export interface IPoint {
   x: number
   y: number
 }
+
+export type IGantterReplaceKeys =  {
+  list?: string,
+  start?: string | Date,
+  end?:string | Date,
+  title?: string,
+  content?: string
+}
+export interface IColumn {
+  key: string | number
+  name: string
+  width?: number
+}
+
+export interface IData {
+  [key: IColumn['key']]: any
+}

@@ -7,10 +7,11 @@
  */
 
 import { Group, Rect, BaseStyleProps } from '@antv/g';
-import { BaseTable, ScrollBar } from '@/core';
-import type { BaseTable as IBaseTable, ScrollBar as IScrollBar } from '@/core';
-import { IColumn } from '@/core/baseTable/interface';
+import { BaseTable, ScrollBar, GantterTable } from '@/core';
+import type { BaseTable as IBaseTable, ScrollBar as IScrollBar, GantterTable as IGantterTable } from '@/core';
+import { IColumn } from '@/common/interface';
 import { styles } from '@/store';
+import { IGantterReplaceKeys } from '@/common/interface'
 
 interface IProps {
   width: number;
@@ -18,6 +19,7 @@ interface IProps {
   columns?: IColumn[];
   data?: { [key: string]: any }[];
   style?: BaseStyleProps;
+  gantterReplaceKeys?: IGantterReplaceKeys
 }
 
 export default class Layout extends Group {
@@ -25,7 +27,9 @@ export default class Layout extends Group {
 
   private scrollbar!: IScrollBar;
 
-  constructor({ width, height, columns, data, style }: IProps) {
+  private gantterTable!: IGantterTable
+
+  constructor({ width, height, columns, data, style, gantterReplaceKeys }: IProps) {
     super({ style });
 
     // 左侧表格
@@ -43,9 +47,25 @@ export default class Layout extends Group {
     });
     this.appendChild(this.baseTable);
     this.baseTable.emitEvent('onScroll', ({ positonY }) => {
-      // console.log(positonY)
       this.scrollbar.position = positonY;
     });
+
+    // 右侧甘特图
+    this.gantterTable = new GantterTable({
+      columns,
+      data,
+      replaceKey: gantterReplaceKeys,
+      style: {
+        x: width / 2,
+        clipPath: new Rect({
+          style: {
+            width: width / 2,
+            height,
+          }
+        })
+      }
+    })
+    this.appendChild(this.gantterTable)
 
     // 竖向滚动条
     this.scrollbar = new ScrollBar({

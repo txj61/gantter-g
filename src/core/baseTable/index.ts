@@ -7,7 +7,8 @@
  */
 import { Group, Rect } from '@antv/g';
 import type { Group as IGroup } from '@antv/g';
-import { IProps, IColumn, IEmitEvent } from './interface';
+import { IProps, IEmitEvent } from './interface';
+import { IColumn, IData } from '@/common/interface'
 import { BaseRow, BaseHeader } from '@/core';
 import { styles } from '@/store';
 
@@ -16,7 +17,7 @@ export default class BaseTable extends Group {
 
   private readonly columns: IColumn[];
 
-  private readonly data: { [key: string]: any }[];
+  private readonly data: IData[];
 
   private readonly width: number;
 

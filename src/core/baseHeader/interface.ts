@@ -6,7 +6,7 @@
  * @Description:
  */
 import { BaseStyleProps } from '@antv/g'
-import { IColumn } from '@/core/baseTable/interface'
+import { IColumn } from '@/common/interface'
 
 export interface IProps {
   columns?: IColumn[]

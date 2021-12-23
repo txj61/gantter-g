@@ -20,11 +20,15 @@ export const YourStory = () => {
     <Gantter
       width={1000}
       columns={[
-        { key: 'createName', name: '姓名' },
-        { key: 'createOrgName', name: '部门', width: 200 },
-        { key: 'createTime', name: '时间' }
+        { key: 'staffName', name: '姓名' },
+        { key: 'staffDepartName', name: '部门', width: 200 },
+        { key: 'jobs', name: '职位' }
       ]}
       dataSource={data}
+      gantterReplaceKeys={{
+        list: 'distribution',
+        title: 'name'
+      }}
     />
   )
 }

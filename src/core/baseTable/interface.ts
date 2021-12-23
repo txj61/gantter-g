@@ -6,16 +6,11 @@
  * @Description:
  */
 import { BaseStyleProps } from '@antv/g';
-
-export interface IColumn {
-  key: string | number;
-  name: string;
-  width?: number;
-}
+import { IColumn, IData } from '@/common/interface'
 
 export interface IProps {
   columns?: IColumn[];
-  data?: { [key: string]: any }[];
+  data?: IData[];
   style?: BaseStyleProps;
 }
 

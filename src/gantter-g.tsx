@@ -8,10 +8,10 @@
 import React, { useEffect } from 'react'
 import { Canvas } from '@antv/g'
 import { Renderer } from '@antv/g-canvas'
-import { IColumn, IData } from './interface'
 import { Layout } from '@/core'
 import { ITheme } from '@/theme/interface'
 import { IStyles } from '@/styles/interface'
+import { IGantterReplaceKeys, IColumn, IData } from '@/common/interface'
 import store from '@/store'
 
 interface Props{
@@ -20,32 +20,35 @@ interface Props{
   width?: string | number
   height?: string | number
   theme?: ITheme
-  styles?: IStyles
+  styles?: IStyles,
+  gantterReplaceKeys?: IGantterReplaceKeys
 }
 
 export default (props: Props) => {
-
+  const { theme, styles, width, height, columns, dataSource, gantterReplaceKeys } = props
+  const { state, setter } = store
   useEffect(() => {
-    store.setter('theme', props.theme ? {
-      ...store.state.theme,
-      ...props.theme
-    } : store.state.theme)
-    store.setter('styles', props.styles ? {
-      ...store.state.styles,
-      ...props.styles
-    } : store.state.styles)
+    setter('theme', theme ? {
+      ...state.theme,
+      ...theme
+    } : state.theme)
+    setter('styles', styles ? {
+      ...state.styles,
+      ...styles
+    } : state.styles)
     const canvas = new Canvas({
       container: 'gantter-g-view',
-      width: Number(props.width) || 500,
-      height: Number(props.height) || 400,
+      width: Number(width) || 500,
+      height: Number(height) || 400,
       renderer: new Renderer()
     })
 
     const layout = new Layout({
-      width: Number(props.width) || 500,
-      height: Number(props.height) || 400,
-      columns: props.columns,
-      data: props.dataSource
+      width: Number(width) || 500,
+      height: Number(height) || 400,
+      columns: columns,
+      data: dataSource,
+      gantterReplaceKeys: gantterReplaceKeys
     })
 
     canvas.appendChild(layout)
