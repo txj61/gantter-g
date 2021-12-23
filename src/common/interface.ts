@@ -27,17 +27,24 @@ export interface IPoint {
 
 export type IGantterReplaceKeys =  {
   list?: string,
-  start?: string | Date,
-  end?:string | Date,
+  start?: string,
+  end?: string,
   title?: string,
   content?: string
 }
 export interface IColumn {
-  key: string | number
+  key: string
   name: string
   width?: number
 }
 
-export interface IData {
+export interface IGantterItem{
+  [key: Required<IGantterReplaceKeys>[keyof Omit<IGantterReplaceKeys, 'list'>]]: string
+}
+
+export interface IGantterData {
+  [key: Required<IGantterReplaceKeys>['list']]: IGantterItem[]
+}
+export interface IData extends IGantterData {
   [key: IColumn['key']]: any
 }

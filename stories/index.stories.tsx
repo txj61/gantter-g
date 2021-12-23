@@ -13,7 +13,19 @@ export const YourStory = () => {
 
   useEffect(() => {
     fetch('https://txj61.github.io/gantter-g/data.json').then(async res => {
-      setData((await res.json()).data)
+      setData((await res.json()).data.map((item: any) => {
+        try{
+          return {
+            ...item,
+            distribution: JSON.parse(item.distribution)
+          }
+        }catch(err){
+          return {
+            ...item,
+            distribution: []
+          }
+        }
+      }))
     })
   }, [])
   return (

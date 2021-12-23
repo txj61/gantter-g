@@ -26,16 +26,15 @@ interface Props{
 
 export default (props: Props) => {
   const { theme, styles, width, height, columns, dataSource, gantterReplaceKeys } = props
-  const { state, setter } = store
   useEffect(() => {
-    setter('theme', theme ? {
-      ...state.theme,
+    store.setter('theme', theme ? {
+      ...store.state.theme,
       ...theme
-    } : state.theme)
-    setter('styles', styles ? {
-      ...state.styles,
+    } : store.state.theme)
+    store.setter('styles', styles ? {
+      ...store.state.styles,
       ...styles
-    } : state.styles)
+    } : store.state.styles)
     const canvas = new Canvas({
       container: 'gantter-g-view',
       width: Number(width) || 500,
