@@ -8,7 +8,8 @@
 import { Group } from '@antv/g';
 import { IProps } from './interface';
 import { IGantterReplaceKeys, IColumn, IData } from '@/common/interface'
-import { totalDateRange } from '@/util/util'
+import { totalDateRange, dateUnit } from '@/util/util'
+import store from '@/store'
 
 export default class GantterTable extends Group {
 
@@ -24,6 +25,8 @@ export default class GantterTable extends Group {
 
   private data: IData[] = []
 
+  private totalRangeDate: [IGantterReplaceKeys['start'], IGantterReplaceKeys['end']]
+
   constructor({ replaceKey, style, columns, data }: IProps) {
     super({ style });
 
@@ -33,7 +36,10 @@ export default class GantterTable extends Group {
     }
     this.columns = columns || []
     this.data = data || []
+    this.totalRangeDate = totalDateRange(this.data, this.replaceKey)
 
-    console.log(totalDateRange(this.data, this.replaceKey))
+    store.setter('dateUnit', dateUnit(this.totalRangeDate[0], this.totalRangeDate[1]))
+
   }
+
 }

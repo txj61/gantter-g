@@ -48,3 +48,5 @@ export interface IGantterData {
 export interface IData extends IGantterData {
   [key: IColumn['key']]: any
 }
+
+export type IDateUnit = 'year' | 'month' | 'week' | 'day'

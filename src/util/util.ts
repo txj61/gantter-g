@@ -1,4 +1,4 @@
-import { IData, IGantterReplaceKeys, IGantterItem } from '@/common/interface';
+import { IData, IGantterReplaceKeys, IGantterItem, IDateUnit } from '@/common/interface';
 
 // 格式化日期
 export const filterDate = (date: Date, format = 'YYYY-MM-DD'): string =>
@@ -63,3 +63,17 @@ export const totalDateRange = (
   });
   return [min, max];
 };
+
+// 根据日期范围返回日期单位
+export const dateUnit = (start: Required<IGantterReplaceKeys['start']>, end: Required<IGantterReplaceKeys['end']>): IDateUnit => {
+  const rangeDays: number = (new Date(end || '').getTime() - new Date(start || '').getTime()) / 1000 / 60 /60 / 24
+  if(rangeDays > 365 * 2){
+    return 'year'
+  }else if(rangeDays > 30 * 2){
+    return 'month'
+  }else if(rangeDays > 7 * 2){
+    return 'week'
+  }else{
+    return 'day'
+  }
+}

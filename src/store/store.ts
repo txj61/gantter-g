@@ -9,18 +9,21 @@ import { ITheme } from '@/theme/interface'
 import { IStyles } from '@/styles/interface'
 import { baseTheme } from '@/theme'
 import { baseStyles } from '@/styles'
+import { IDateUnit } from '@/common/interface'
 
 
 export interface IState {
   theme: ITheme
   styles: IStyles
+  dateUnit: IDateUnit
   [key: string]: any
 }
 
 class Store {
   public state: IState = {
     theme: baseTheme,
-    styles: baseStyles
+    styles: baseStyles,
+    dateUnit: 'day'
   }
 
   public setter(key: keyof IState, value: any){
