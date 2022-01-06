@@ -28,6 +28,9 @@ const baseTheme: ITheme = {
   tableHeaderBottomBorderColor: '#69c0ff',
   tableHeaderFontColor: '#1f1f1f',
 
+  gantterStopColor: '#b7eb8f',
+  gantterProgressColor: '#ffbb96',
+  gantterUnbeginColor: '#91d5ff'
 }
 
 export default baseTheme

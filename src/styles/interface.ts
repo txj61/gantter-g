@@ -52,4 +52,6 @@ export interface IStyles {
     | number;
   // 表格单元格padding
   readonly tableCellPadding?: number;
+
+  readonly gantterCellWidth: number;
 }

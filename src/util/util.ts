@@ -42,8 +42,8 @@ export const totalDateRange = (
   data: IData[],
   replaceKeys: Required<IGantterReplaceKeys>,
 ): [
-  Required<IGantterReplaceKeys['start']>,
-  Required<IGantterReplaceKeys['end']>,
+  Required<IGantterReplaceKeys>['start'],
+  Required<IGantterReplaceKeys>['end'],
 ] => {
   let max: IGantterReplaceKeys['end'] = filterDate(
     new Date(new Date().setDate(new Date().getDate() + 15)),
@@ -65,9 +65,9 @@ export const totalDateRange = (
 };
 
 // 根据日期范围返回日期单位
-export const dateUnit = (start: Required<IGantterReplaceKeys['start']>, end: Required<IGantterReplaceKeys['end']>): IDateUnit => {
-  const rangeDays: number = (new Date(end || '').getTime() - new Date(start || '').getTime()) / 1000 / 60 /60 / 24
-  if(rangeDays > 365 * 2){
+export const dateUnit = (start: Required<IGantterReplaceKeys>['start'], end: Required<IGantterReplaceKeys>['end']): IDateUnit => {
+  const rangeDays: number = (new Date(end).getTime() - new Date(start).getTime()) / 1000 / 60 /60 / 24
+  if(rangeDays > 365 * 4){
     return 'year'
   }else if(rangeDays > 30 * 2){
     return 'month'
@@ -76,4 +76,33 @@ export const dateUnit = (start: Required<IGantterReplaceKeys['start']>, end: Req
   }else{
     return 'day'
   }
+}
+
+// 返回甘特图columns
+export const gantterColumns = (start: Required<IGantterReplaceKeys>['start'], end: Required<IGantterReplaceKeys>['end'], unit: IDateUnit) => {
+  const startDate: Date = new Date(start)
+  const endDate: Date = new Date(end)
+  const columns: string[] = []
+
+  if(unit === 'year'){
+    let i: number = startDate.getFullYear()
+    while(i <= endDate.getFullYear()){
+      columns.push(i.toString())
+      i++
+    }
+  }else if(unit === 'month'){
+    let i: Date = new Date(`${startDate.getFullYear()}-${startDate.getMonth() + 1}`)
+    while(i <= endDate){
+      columns.push(filterDate(i, 'YYYY-MM'))
+      i = i.getMonth() === 11 ? new Date(`${i.getFullYear() + 1}-01-01`) : new Date(`${i.getFullYear()}-${i.getMonth() + 2}`)
+    }
+  }else if(unit === 'day'){
+    let i: Date = startDate
+    while(i <= endDate){
+      columns.push(filterDate(i, 'YYYY-MM-DD'))
+      i = new Date(i.getTime() + 1000 * 3600 * 24)
+    }
+  }
+
+  return columns
 }

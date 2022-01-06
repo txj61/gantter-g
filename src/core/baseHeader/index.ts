@@ -5,7 +5,7 @@
  * @LastEditors: Anthan
  * @Description:表格行
  */
-import { Group } from '@antv/g'
+import { Group, TextStyleProps } from '@antv/g'
 import { BaseCell } from '@/core'
 import { IProps } from './interface'
 import { IColumn } from '@/common/interface'
@@ -33,11 +33,14 @@ export default class BaseRow extends Group {
 
   private cellHeight: number = styles.tableCellHeight
 
-  constructor({ columns, style }: IProps){
+  private textStyle: Partial<TextStyleProps>
+
+  constructor({ columns, style, textStyle }: IProps){
     super({ style })
 
     this.columns = columns ?? this.columns
-
+    this.cellHeight = this.style.clipPath.style.height;
+    this.textStyle = textStyle || {}
     this.renderRow()
   }
 
@@ -56,7 +59,8 @@ export default class BaseRow extends Group {
         textStyle: {
           text: item.name,
           fill: this.fontColor,
-          fontSize: this.fontSize
+          fontSize: this.fontSize,
+          ...this.textStyle
         },
         leftBorder: {
           lineWidth: index ? this.dividerSize : 0,

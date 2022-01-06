@@ -39,4 +39,11 @@ export interface ITheme {
   readonly tableEvenBackgroundColor: string;
   // 表格文字
   readonly tableCellFontColor?: string;
+
+  // 甘特图已结束颜色
+  readonly gantterStopColor?: string
+  // 甘特图进行中颜色
+  readonly gantterProgressColor?: string
+  // 甘特图未开始颜色
+  readonly gantterUnbeginColor?: string
 }

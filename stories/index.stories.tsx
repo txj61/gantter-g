@@ -30,7 +30,7 @@ export const YourStory = () => {
   }, [])
   return (
     <Gantter
-      width={1000}
+      width={1400}
       columns={[
         { key: 'staffName', name: '姓名' },
         { key: 'staffDepartName', name: '部门', width: 200 },

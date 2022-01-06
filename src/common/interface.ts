@@ -30,7 +30,8 @@ export type IGantterReplaceKeys =  {
   start?: string,
   end?: string,
   title?: string,
-  content?: string
+  content?: string,
+  color?: string
 }
 export interface IColumn {
   key: string

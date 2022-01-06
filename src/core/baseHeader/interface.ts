@@ -5,10 +5,11 @@
  * @LastEditors: Anthan
  * @Description:
  */
-import { BaseStyleProps } from '@antv/g'
+import { BaseStyleProps, TextStyleProps } from '@antv/g'
 import { IColumn } from '@/common/interface'
 
 export interface IProps {
   columns?: IColumn[]
-  style?: BaseStyleProps
+  style?: BaseStyleProps,
+  textStyle?: Partial<TextStyleProps>
 }

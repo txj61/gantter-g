@@ -69,10 +69,11 @@ export default class Layout extends Group {
 
     // 竖向滚动条
     this.scrollbar = new ScrollBar({
-      scrollAreaLength: height,
+      scrollAreaLength: this.baseTable.tableScrollHeight,
       scrollTotalLength: this.baseTable.totalHeight,
       style: {
         x: width - styles.scrollWeight,
+        y: this.baseTable.headerHeight
       },
     });
     this.appendChild(this.scrollbar);

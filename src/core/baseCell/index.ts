@@ -79,13 +79,20 @@ export default class BaseCell extends Group {
   }
 
   private renderText(){
+    let x: number = 0
+    let clipX: number = 0
+    if(this.textStyle.textAlign === 'center'){
+      x = this.rectStyle.width / 2 - (this.textStyle.padding || 0)
+      clipX = -(this.rectStyle.width / 2 - (this.textStyle.padding || 0))
+    }
     this.appendChild(new Text({
       style: {
         ...this.textStyle,
+        x,
         y: this.rectStyle.height / 2 - (this.textStyle.padding || 0),
         clipPath: new Rect({
           style: {
-            x: 0,
+            x: clipX,
             y: 0,
             width: this.rectStyle.width - (this.textStyle.padding || 0) * 2,
             height: this.rectStyle.height - (this.textStyle.padding || 0) * 2

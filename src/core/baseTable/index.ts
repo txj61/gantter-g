@@ -33,6 +33,8 @@ export default class BaseTable extends Group {
 
   private _scrollTop: number = 0;
 
+  private _headerHeight: number = styles.tableCellHeight * 2;
+
   private _emitEvents: IEmitEvent = {
     onScroll: undefined,
   };
@@ -63,6 +65,14 @@ export default class BaseTable extends Group {
     return this._scrollTop;
   }
 
+  public get tableScrollHeight(): number {
+    return this.content.style.clipPath.style.height
+  }
+
+  public get headerHeight(): number {
+    return this._headerHeight
+  }
+
   public emitEvent(
     eventName: keyof IEmitEvent,
     event: IEmitEvent[keyof IEmitEvent],
@@ -73,6 +83,14 @@ export default class BaseTable extends Group {
   public renderHeader() {
     this.header = new BaseHeader({
       columns: this.columns,
+      style: {
+        clipPath: new Rect({
+          style: {
+            width: this.width,
+            height: this._headerHeight
+          }
+        })
+      }
     });
     this.appendChild(this.header);
   }
@@ -80,11 +98,11 @@ export default class BaseTable extends Group {
   public renderRows() {
     this.content = new Group({
       style: {
-        y: this.rowHeight,
+        y: this._headerHeight,
         clipPath: new Rect({
           style: {
             width: this.width,
-            height: this.height,
+            height: this.height - this._headerHeight,
           },
         }),
       },
@@ -117,10 +135,10 @@ export default class BaseTable extends Group {
     if (this.tableScrollTop >= 0 && event.deltaY < 0) {
       this.tableScrollTop = 0;
     } else if (
-      this.tableScrollTop <= -(this.totalHeight - this.height) &&
+      this.tableScrollTop <= -(this.totalHeight - this.content.style.clipPath.style.height) &&
       event.deltaY > 0
     ) {
-      this.tableScrollTop = -(this.totalHeight - this.height);
+      this.tableScrollTop = -(this.totalHeight - this.content.style.clipPath.style.height);
     } else {
       this.tableScrollTop -= event.deltaY / 2;
       if (this._emitEvents.onScroll) {
