@@ -30,7 +30,8 @@ const baseTheme: ITheme = {
 
   gantterStopColor: '#b7eb8f',
   gantterProgressColor: '#ffbb96',
-  gantterUnbeginColor: '#91d5ff'
+  gantterUnbeginColor: '#91d5ff',
+  gantterDividerColor: '#cccccc'
 }
 
 export default baseTheme

@@ -53,5 +53,10 @@ export interface IStyles {
   // 表格单元格padding
   readonly tableCellPadding?: number;
 
+  // 甘特图单元格宽
   readonly gantterCellWidth: number;
+  // 甘特图图形高
+  readonly gantterBarHeight: number
+  // 甘特图分割线
+  readonly gantterDividerSize: number
 }

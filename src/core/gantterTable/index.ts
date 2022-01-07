@@ -5,31 +5,24 @@
  * @LastEditors: Anthan
  * @Description:甘特图表格
  */
-import { Group, Rect } from '@antv/g';
+import { Group, Rect, Line } from '@antv/g';
 import type { Group as IGroup } from '@antv/g'
-import { IProps } from './interface';
-import { IGantterReplaceKeys, IData, IDateUnit } from '@/common/interface'
+import { IProps, IEmitEvent } from './interface';
+import { IGantterReplaceKeys, IData, IDateUnit, IColumn } from '@/common/interface'
 import { totalDateRange, dateUnit, gantterColumns } from '@/util/util'
-import store, { styles } from '@/store'
-import { BaseRow, BaseHeader, GantterBar } from '@/core'
-import type { BaseRow as IBaseRow, BaseHeader as IBaseHeader } from '@/core'
+import store, { styles, theme } from '@/store'
+import { BaseHeader, GantterBar } from '@/core'
+import type { BaseHeader as IBaseHeader } from '@/core'
 
 export default class GantterTable extends Group {
 
-  private replaceKey: Required<IGantterReplaceKeys> = {
-    list: 'list',
-    start: 'start',
-    end: 'end',
-    title: 'title',
-    content: 'content',
-    color: ''
-  }
+  private replaceKey: Required<IGantterReplaceKeys> = store.getter('gantterReplaceKeys')
 
   private width: number
 
   private height: number
 
-  private columns: string[] = []
+  private columns: IColumn[] = []
 
   private data: IData[] = []
 
@@ -47,21 +40,17 @@ export default class GantterTable extends Group {
 
   private scrollContent!: IGroup
 
-  private columnsDate: { [key: string]: string[] } = {}
-
-  private rows: IBaseRow[] = [];
-
   private _scrollTop: number = 0;
 
   private totalHeight: number = 0
 
-  constructor({ replaceKey, style, data }: IProps) {
+  private _emitEvents: IEmitEvent = {
+    onScroll: undefined,
+  };
+
+  constructor({ style, data }: IProps) {
     super({ style });
 
-    this.replaceKey = {
-      ...this.replaceKey,
-      ...replaceKey
-    }
     this.data = data || []
     this.totalRangeDate = totalDateRange(this.data, this.replaceKey)
     this.width = this.style.clipPath.style.width
@@ -70,37 +59,42 @@ export default class GantterTable extends Group {
     store.setter('dateUnit', dateUnit(this.totalRangeDate[0], this.totalRangeDate[1]))
     this.unit = store.getter('dateUnit')
 
-    this.columns = gantterColumns(this.totalRangeDate[0], this.totalRangeDate[1], this.unit)
-    if(this.columns.length > 0){
-      this.cellWidth = this.columns.length * styles.gantterCellWidth > this.width ? styles.gantterCellWidth : this.width / this.columns.length
-    }
+    const dateArr: string[] = gantterColumns(this.totalRangeDate[0], this.totalRangeDate[1], this.unit)
+    this.cellWidth = dateArr.length * this.cellWidth > this.width ? this.cellWidth : this.width / dateArr.length
+    this.columns = dateArr.map(item => {
+      return {
+        name: item,
+        key: item,
+        width: this.cellWidth
+      }
+    })
 
     this.renderHeader()
     this.renderRows()
     this.renderGantterBar()
+    this.bindEvent()
   }
 
   public set tableScrollTop(v: number) {
     this._scrollTop = v;
-    this.rows.forEach((item, index) => {
-      item.style.y = styles.tableCellHeight * index + this.tableScrollTop;
-    });
+    this.scrollContent.style.y = this._scrollTop
   }
 
   public get tableScrollTop(): number {
     return this._scrollTop;
   }
 
+  public emitEvent(
+    eventName: keyof IEmitEvent,
+    event: IEmitEvent[keyof IEmitEvent],
+  ) {
+    this._emitEvents[eventName] = event;
+  }
+
   private renderHeader(){
     if(this.unit === 'year'){
       this.header1 = new BaseHeader({
-        columns: this.columns.map(item => {
-          return {
-            name: `${new Date(item).getFullYear()}年`,
-            key: item,
-            width: this.cellWidth
-          }
-        }),
+        columns: this.columns,
         style: {
           clipPath: new Rect({
             style: {
@@ -115,16 +109,13 @@ export default class GantterTable extends Group {
       })
       this.appendChild(this.header1)
     }else if(this.unit === 'month'){
-      const years: string[] = Array.from(new Set(this.columns.map(item => new Date(item).getFullYear().toString())))
-      years.forEach(item => {
-        this.columnsDate[item] = this.columns.filter(i => new Date(i).getFullYear().toString() === item)
-      })
+      const years: number[] = Array.from(new Set(this.columns.map(item => new Date(item.key).getFullYear())))
       this.header1 = new BaseHeader({
-        columns: Object.keys(this.columnsDate).map(item => {
+        columns: years.map(year => {
           return {
-            name: `${item}年`,
-            key: item,
-            width: this.columnsDate[item].length * this.cellWidth
+            name: `${year}年`,
+            key: year.toString(),
+            width: this.columns.filter(item => new Date(item.key).getFullYear() === year).length * this.cellWidth
           }
         }),
         style: {
@@ -140,13 +131,7 @@ export default class GantterTable extends Group {
         }
       })
       this.header2 = new BaseHeader({
-        columns: this.columns.map(item => {
-          return {
-            name: `${new Date(item).getMonth() + 1}月`,
-            key: item,
-            width: this.cellWidth
-          }
-        }),
+        columns: this.columns.map(item => ({ ...item, name: `${new Date(item.name).getMonth() + 1}月` })),
         style: {
           y: styles.tableCellHeight,
           clipPath: new Rect({
@@ -185,20 +170,34 @@ export default class GantterTable extends Group {
     })
     this.content.appendChild(this.scrollContent)
 
-    this.data.forEach((item, index) => {
-      this.rows.push(
-        new BaseRow({
-          columns: this.columns.map(item => ({ name: '', key: item, width: this.cellWidth })),
-          data: item,
-          style: {
-            x: 0,
-            y: styles.tableCellHeight * index,
-          },
-        }),
-      );
-      this.scrollContent.appendChild(this.rows[index]);
-      this.totalHeight += styles.tableCellHeight;
-    });
+    // 横向分割线
+    this.data.forEach((_, index) => {
+      this.scrollContent.appendChild(new Line({
+        style: {
+          x1: 0,
+          y1: styles.tableCellHeight * index,
+          x2: this.columns.length * this.cellWidth,
+          y2: styles.tableCellHeight * index,
+          stroke: theme.gantterDividerColor,
+          lineWidth: styles.gantterDividerSize
+        }
+      }))
+      this.totalHeight += styles.tableCellHeight
+    })
+
+    // 纵向分割线
+    this.columns.forEach((_, index) => {
+      this.scrollContent.appendChild(new Line({
+        style: {
+          x1: this.cellWidth * index,
+          y1: 0,
+          x2: this.cellWidth * index,
+          y2: styles.tableCellHeight * this.data.length,
+          stroke: theme.gantterDividerColor,
+          lineWidth: styles.gantterDividerSize
+        }
+      }))
+    })
   }
 
   private renderGantterBar(){
@@ -206,6 +205,7 @@ export default class GantterTable extends Group {
       this.scrollContent.appendChild(
         new GantterBar({
           list: item[this.replaceKey.list],
+          columns: this.columns,
           style: {
             x: 0,
             y: styles.tableCellHeight * index,
@@ -219,5 +219,27 @@ export default class GantterTable extends Group {
         })
       )
     })
+  }
+
+  private bindEvent() {
+    this.content.addEventListener('wheel', this.wheelEvent.bind(this));
+  }
+
+  private wheelEvent(event: any) {
+    if (this.tableScrollTop >= 0 && event.deltaY < 0) {
+      this.tableScrollTop = 0;
+    } else if (
+      this.tableScrollTop <= -(this.totalHeight - this.content.style.clipPath.style.height) &&
+      event.deltaY > 0
+    ) {
+      this.tableScrollTop = -(this.totalHeight - this.content.style.clipPath.style.height);
+    } else {
+      this.tableScrollTop -= event.deltaY / 2;
+    }
+    if (this._emitEvents.onScroll) {
+      this._emitEvents.onScroll({
+        positonY: this.tableScrollTop,
+      });
+    }
   }
 }

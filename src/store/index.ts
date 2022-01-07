@@ -13,5 +13,6 @@ const store = new Store()
 export const theme = store.getter('theme')
 export const styles = store.getter('styles')
 export const dateUnit = store.getter('dateUnit')
+export const gantterReplaceKeys = store.getter('gantterReplaceKeys')
 
 export default store

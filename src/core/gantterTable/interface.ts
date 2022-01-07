@@ -1,8 +1,15 @@
 import { BaseStyleProps } from '@antv/g';
-import { IGantterReplaceKeys, IColumn, IData } from '@/common/interface'
+import { IColumn, IData } from '@/common/interface'
 export interface IProps {
   columns?: IColumn[]
   data?: IData[]
   style?: BaseStyleProps;
-  replaceKey?: IGantterReplaceKeys
+}
+
+export interface IScrollParams {
+  positonY: number;
+}
+
+export interface IEmitEvent {
+  onScroll?: (params: IScrollParams) => void;
 }

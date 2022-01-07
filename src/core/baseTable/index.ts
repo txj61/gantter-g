@@ -141,11 +141,11 @@ export default class BaseTable extends Group {
       this.tableScrollTop = -(this.totalHeight - this.content.style.clipPath.style.height);
     } else {
       this.tableScrollTop -= event.deltaY / 2;
-      if (this._emitEvents.onScroll) {
-        this._emitEvents.onScroll({
-          positonY: this.tableScrollTop,
-        });
-      }
+    }
+    if (this._emitEvents.onScroll) {
+      this._emitEvents.onScroll({
+        positonY: this.tableScrollTop,
+      });
     }
   }
 }

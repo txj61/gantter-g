@@ -25,7 +25,9 @@ const baseStyles: IStyles = {
   tableColDividerSize: .5,
   tableCellPadding: 8,
 
-  gantterCellWidth: 52
+  gantterCellWidth: 52,
+  gantterBarHeight: 20,
+  gantterDividerSize: .5
 }
 
 export default baseStyles

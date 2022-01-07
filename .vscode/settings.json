@@ -147,5 +147,5 @@
   "emmet.triggerExpansionOnTab": true,
   "typescript.tsdk": "node_modules/typescript/lib",
   "deno.enable": false,
-  "cSpell.words": ["Gantter"]
+  "cSpell.words": ["Gantter", "Unbegin"]
 }

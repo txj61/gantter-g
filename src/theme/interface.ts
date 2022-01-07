@@ -46,4 +46,6 @@ export interface ITheme {
   readonly gantterProgressColor?: string
   // 甘特图未开始颜色
   readonly gantterUnbeginColor?: string
+  // 甘特图分割线
+  readonly gantterDividerColor?: string
 }
