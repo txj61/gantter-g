@@ -7,8 +7,8 @@
  */
 
 import { Group, Rect, BaseStyleProps } from '@antv/g';
-import { BaseTable, ScrollBar, GantterTable } from '@/core';
-import type { BaseTable as IBaseTable, ScrollBar as IScrollBar, GantterTable as IGantterTable } from '@/core';
+import { BaseTable, ScrollBar, GantterTable, DragDivider } from '@/core';
+import type { BaseTable as IBaseTable, ScrollBar as IScrollBar, GantterTable as IGantterTable, DragDivider as IDragDivider } from '@/core';
 import { IColumn } from '@/common/interface';
 import { styles } from '@/store';
 import { IGantterReplaceKeys } from '@/common/interface'
@@ -30,6 +30,8 @@ export default class Layout extends Group {
 
   private gantterTable!: IGantterTable
 
+  private dragDivider!: IDragDivider
+
   constructor({ width, height, columns, data, style, gantterReplaceKeys }: IProps) {
     super({ style });
 
@@ -37,6 +39,7 @@ export default class Layout extends Group {
       ...store.getter('gantterReplaceKeys'),
       ...gantterReplaceKeys,
     })
+    store.setter('dragX', width / 2)
 
     // 左侧表格
     this.baseTable = new BaseTable({
@@ -45,7 +48,7 @@ export default class Layout extends Group {
       style: {
         clipPath: new Rect({
           style: {
-            width: width / 2,
+            width: store.getter('dragX'),
             height,
           },
         }),
@@ -62,10 +65,10 @@ export default class Layout extends Group {
       columns,
       data,
       style: {
-        x: width / 2,
+        x: store.getter('dragX'),
         clipPath: new Rect({
           style: {
-            width: width / 2,
+            width: width - store.getter('dragX'),
             height,
           }
         })
@@ -91,5 +94,15 @@ export default class Layout extends Group {
       this.baseTable.tableScrollTop = positonY;
       this.gantterTable.tableScrollTop = positonY
     });
+
+    // 拖动条
+    // this.dragDivider = new DragDivider({
+    //   position: store.getter('dragX'),
+    //   height: styles.defaultHeight,
+    //   style: {
+    //     x: store.getter('dragX')
+    //   }
+    // })
+    // this.appendChild(this.dragDivider)
   }
 }

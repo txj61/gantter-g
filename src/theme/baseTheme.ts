@@ -13,6 +13,9 @@ const baseTheme: ITheme = {
   backgroundColor: '#ffffff',
   borderColor: '#bae7ff',
 
+  dragDividerColor: '#eeeeee',
+  dragDividerBorderColor: '#bae7ff',
+
   scrollBarSlideColor: '#ffffff',
   scrollBarThumbColor: '#dddddd',
   scrollBarThumbHoverColor: '#cccccc',

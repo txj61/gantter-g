@@ -12,6 +12,11 @@ export interface ITheme {
   readonly borderColor: string;
   readonly fontColor: string;
 
+  // 拖动条颜色
+  readonly dragDividerColor: string
+  // 拖动条边框颜色
+  readonly dragDividerBorderColor: string
+
   // 滚动条滑道颜色
   readonly scrollBarSlideColor: string;
   // 滚动条滑块颜色

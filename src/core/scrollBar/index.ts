@@ -53,7 +53,7 @@ export default class ScrollBar extends Group {
   }: IProp) {
     super({ style });
 
-    this._isVertical = isVertical || this._isVertical;
+    this._isVertical = isVertical ?? this._isVertical;
     this._scrollAreaLength = scrollAreaLength;
     this._scrollTotalLength = scrollTotalLength;
     this._position = position || this._position;
@@ -121,8 +121,16 @@ export default class ScrollBar extends Group {
           fill: theme.scrollBarSlideColor,
         },
       });
-      this.appendChild(this.controllor);
+    }else{
+      this.controllor = new Rect({
+        style: {
+          width: this._scrollAreaLength,
+          height: styles.scrollWeight,
+          fill: theme.scrollBarSlideColor
+        }
+      })
     }
+    this.appendChild(this.controllor);
   }
 
   private renderThumb() {
@@ -143,8 +151,19 @@ export default class ScrollBar extends Group {
           cursor: 'pointer',
         },
       });
-      this.appendChild(this.thumb);
+    }else{
+      this.thumb = new Rect({
+        style: {
+          width: this.thumbLen,
+          height: styles.scrollWeight,
+          x: this.thumbPoint.x,
+          fill: theme.scrollBarThumbColor,
+          radius: styles.scrollBorderRadius,
+          cursor: 'pointer'
+        }
+      })
     }
+    this.appendChild(this.thumb);
   }
 
   private bindEvent() {
@@ -161,7 +180,7 @@ export default class ScrollBar extends Group {
         if (this._isVertical) {
           this.diff = event.client.y - this.thumbPoint.y;
         } else {
-          // 横向
+          this.diff = event.client.x - this.thumbPoint.x
         }
         this.isMousedown = true;
       },
@@ -194,7 +213,22 @@ export default class ScrollBar extends Group {
         }
       }
       if (this.isMousedown && !this._isVertical) {
-        // 横向
+        if(event.clientX - this.diff <= 0){
+          this.thumb.style.x = 0
+        }else if(event.clientX - this.diff >= this._scrollAreaLength - this.thumb.style.width){
+          this.thumb.style.x = this._scrollAreaLength - this.thumb.style.width
+        }else{
+          this.thumb.style.x = event.clientX - this.diff
+        }
+        this._position = (-(this._scrollTotalLength - this._scrollAreaLength) * this.thumb.style.x) / (this._scrollAreaLength - this.thumbLen)
+        if(this._emitEvents.onScroll){
+          this._emitEvents.onScroll({
+            areaLength: this._scrollAreaLength,
+            totalLength: this._scrollTotalLength,
+            positonX: this._position,
+            positonY: 0
+          })
+        }
       }
     });
     document.body.addEventListener('mouseup', () => {
@@ -202,7 +236,7 @@ export default class ScrollBar extends Group {
       if (this._isVertical) {
         this.thumbPoint.y = this.thumb.style.y ?? 0;
       } else {
-        // 横向
+        this.thumbPoint.x = this.thumb.style.x ?? 0
       }
     });
   }

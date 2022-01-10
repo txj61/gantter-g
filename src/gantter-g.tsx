@@ -19,8 +19,8 @@ interface Props{
   columns?: IColumn[]
   width?: string | number
   height?: string | number
-  theme?: ITheme
-  styles?: IStyles,
+  theme?: Partial<ITheme>
+  styles?: Partial<IStyles>,
   gantterReplaceKeys?: IGantterReplaceKeys
 }
 
@@ -37,14 +37,14 @@ export default (props: Props) => {
     } : store.state.styles)
     const canvas = new Canvas({
       container: 'gantter-g-view',
-      width: Number(width) || 500,
-      height: Number(height) || 400,
+      width: Number(width) || styles?.defaultWidth || 1000,
+      height: Number(height) || styles?.defaultHeight || 500,
       renderer: new Renderer()
     })
 
     const layout = new Layout({
-      width: Number(width) || 500,
-      height: Number(height) || 400,
+      width: Number(width) || styles?.defaultWidth || 1000,
+      height: Number(height) || styles?.defaultHeight || 500,
       columns: columns,
       data: dataSource,
       gantterReplaceKeys: gantterReplaceKeys

@@ -11,8 +11,8 @@ import { IProps, IEmitEvent } from './interface';
 import { IGantterReplaceKeys, IData, IDateUnit, IColumn } from '@/common/interface'
 import { totalDateRange, dateUnit, gantterColumns } from '@/util/util'
 import store, { styles, theme } from '@/store'
-import { BaseHeader, GantterBar } from '@/core'
-import type { BaseHeader as IBaseHeader } from '@/core'
+import { BaseHeader, GantterBar, ScrollBar } from '@/core'
+import type { BaseHeader as IBaseHeader, ScrollBar as IScrollBar } from '@/core'
 
 export default class GantterTable extends Group {
 
@@ -40,9 +40,13 @@ export default class GantterTable extends Group {
 
   private scrollContent!: IGroup
 
+  private scrollBar!: IScrollBar
+
   private _scrollTop: number = 0;
 
   private totalHeight: number = 0
+
+  private totalWidth: number = 0
 
   private _emitEvents: IEmitEvent = {
     onScroll: undefined,
@@ -72,6 +76,7 @@ export default class GantterTable extends Group {
     this.renderHeader()
     this.renderRows()
     this.renderGantterBar()
+    this.renderScrollBar()
     this.bindEvent()
   }
 
@@ -108,6 +113,7 @@ export default class GantterTable extends Group {
         }
       })
       this.appendChild(this.header1)
+      this.totalWidth = this.header1.style.clipPath.style.width
     }else if(this.unit === 'month'){
       const years: number[] = Array.from(new Set(this.columns.map(item => new Date(item.key).getFullYear())))
       this.header1 = new BaseHeader({
@@ -144,6 +150,7 @@ export default class GantterTable extends Group {
       })
       this.appendChild(this.header1)
       this.appendChild(this.header2)
+      this.totalWidth = this.header1.style.clipPath.style.width
     }else if(this.unit === 'day'){
 
     }
@@ -218,6 +225,23 @@ export default class GantterTable extends Group {
           }
         })
       )
+    })
+  }
+
+  private renderScrollBar(){
+    this.scrollBar = new ScrollBar({
+      isVertical: false,
+      scrollAreaLength: this.width,
+      scrollTotalLength: this.totalWidth,
+      style: {
+        y: this.height - styles.scrollWeight
+      }
+    })
+    this.appendChild(this.scrollBar)
+    this.scrollBar.emitEvent('onScroll', ({ positonX }) => {
+      this.header1.style.x = positonX
+      this.header2.style.x = positonX
+      this.scrollContent.style.x = positonX
     })
   }
 

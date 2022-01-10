@@ -9,8 +9,9 @@ import { Group, Rect } from '@antv/g';
 import type { Group as IGroup } from '@antv/g';
 import { IProps, IEmitEvent } from './interface';
 import { IColumn, IData } from '@/common/interface'
-import { BaseRow, BaseHeader } from '@/core';
+import { BaseRow, BaseHeader, ScrollBar } from '@/core';
 import { styles } from '@/store';
+import type { BaseRow as IBaseRow, BaseHeader as IBaseHeader, ScrollBar as IScrollBar } from '@/core'
 
 export default class BaseTable extends Group {
   public totalHeight: number = 0;
@@ -25,11 +26,17 @@ export default class BaseTable extends Group {
 
   private readonly rowHeight: number = styles.tableCellHeight;
 
-  private header!: IGroup;
+  private header!: IBaseHeader;
 
   private content!: IGroup;
 
-  private readonly rows: IGroup[] = [];
+  private scrollContent!: IGroup
+
+  private readonly rows: IBaseRow[] = [];
+
+  private scrollBar!: IScrollBar
+
+  private totalWidth!: number
 
   private _scrollTop: number = 0;
 
@@ -46,9 +53,13 @@ export default class BaseTable extends Group {
     this.data = data || [];
     this.width = this.style.clipPath.style.width;
     this.height = this.style.clipPath.style.height;
+    this.totalWidth = this.columns.reduce((total, item) => {
+      return item.width ? total + item.width : total + styles.tableCellWidth
+    }, 0)
 
     this.renderRows();
     this.renderHeader();
+    this.renderScrollBar()
 
     this.bindEvent();
   }
@@ -58,7 +69,6 @@ export default class BaseTable extends Group {
     this.rows.forEach((item, index) => {
       item.style.y = this.rowHeight * index + this.tableScrollTop;
     });
-    // this.content.style.y = this._scrollTop
   }
 
   public get tableScrollTop(): number {
@@ -86,7 +96,7 @@ export default class BaseTable extends Group {
       style: {
         clipPath: new Rect({
           style: {
-            width: this.width,
+            width: this.totalWidth,
             height: this._headerHeight
           }
         })
@@ -101,12 +111,20 @@ export default class BaseTable extends Group {
         y: this._headerHeight,
         clipPath: new Rect({
           style: {
-            width: this.width,
+            width: this.totalWidth,
             height: this.height - this._headerHeight,
           },
         }),
       },
     });
+    this.appendChild(this.content);
+
+    this.scrollContent = new Group({
+      style: {
+        y: this.tableScrollTop
+      }
+    })
+    this.content.appendChild(this.scrollContent)
 
     this.data.forEach((item, index) => {
       this.rows.push(
@@ -116,15 +134,29 @@ export default class BaseTable extends Group {
           isOdd: Boolean(index % 2),
           style: {
             x: 0,
-            y: this.rowHeight * index + this.tableScrollTop,
+            y: this.rowHeight * index,
           },
         }),
       );
-      this.content.appendChild(this.rows[index]);
+      this.scrollContent.appendChild(this.rows[index]);
       this.totalHeight += this.rowHeight;
     });
+  }
 
-    this.appendChild(this.content);
+  private renderScrollBar(){
+    this.scrollBar = new ScrollBar({
+      isVertical: false,
+      scrollAreaLength: this.width,
+      scrollTotalLength: this.totalWidth,
+      style: {
+        y: this.height - styles.scrollWeight
+      }
+    })
+    this.appendChild(this.scrollBar)
+    this.scrollBar.emitEvent('onScroll', ({ positonX }) => {
+      this.header.style.x = positonX
+      this.scrollContent.style.x = positonX
+    })
   }
 
   private bindEvent() {

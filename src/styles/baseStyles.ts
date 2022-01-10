@@ -12,6 +12,10 @@ const baseStyles: IStyles = {
   fontSize: 14,
   fontWeight: 'normal',
 
+  defaultWidth: 1000,
+  defaultHeight: 500,
+  dragWeight: 5,
+
   scrollWeight: 8,
   scrollBorderRadius: 4,
   scrollMinThumbLen: 20,

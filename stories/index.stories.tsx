@@ -32,9 +32,10 @@ export const YourStory = () => {
     <Gantter
       width={1400}
       columns={[
-        { key: 'staffName', name: '姓名' },
-        { key: 'staffDepartName', name: '部门', width: 200 },
-        { key: 'jobs', name: '职位' }
+        { key: 'staffName', name: '姓名', width: 200 },
+        { key: 'staffDepartName', name: '部门', width: 300 },
+        { key: 'jobs', name: '职位', width: 200 },
+        { key: 'userStatus_dictText', name: '状态', width: 100 }
       ]}
       dataSource={data}
       gantterReplaceKeys={{

@@ -14,6 +14,13 @@ export interface IStyles {
   // 字体粗细
   readonly fontWeight: 'normal' | 'bold' | 'bolder' | 'lighter' | number;
 
+  // 默认组件宽度
+  readonly defaultWidth: number
+  // 默认组件高度
+  readonly defaultHeight: number
+  // 拖动条宽度
+  readonly dragWeight: number
+
   // 滚动条宽度
   readonly scrollWeight: number;
   // 滚动条圆角
