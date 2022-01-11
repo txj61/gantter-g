@@ -7,10 +7,10 @@
  */
 
 import { Group, Rect, BaseStyleProps } from '@antv/g';
-import { BaseTable, ScrollBar, GantterTable, DragDivider } from '@/core';
+import { BaseTable, ScrollBar, GantterTable , DragDivider} from '@/core';
 import type { BaseTable as IBaseTable, ScrollBar as IScrollBar, GantterTable as IGantterTable, DragDivider as IDragDivider } from '@/core';
 import { IColumn } from '@/common/interface';
-import { styles } from '@/store';
+import { styles, theme } from '@/store';
 import { IGantterReplaceKeys } from '@/common/interface'
 import store from '@/store'
 
@@ -96,13 +96,21 @@ export default class Layout extends Group {
     });
 
     // 拖动条
-    // this.dragDivider = new DragDivider({
-    //   position: store.getter('dragX'),
-    //   height: styles.defaultHeight,
-    //   style: {
-    //     x: store.getter('dragX')
-    //   }
-    // })
-    // this.appendChild(this.dragDivider)
+    this.dragDivider = new DragDivider({
+      style: {
+        width: styles.dragWeight,
+        height: styles.defaultHeight,
+        x: store.getter('dragX'),
+        fill: theme.dragDividerColor,
+        cursor: 'col-resize'
+      }
+    })
+    this.appendChild(this.dragDivider)
+    this.dragDivider.emitEvent('onDrag', ({ x }) => {
+      store.setter('dragX', x)
+      this.baseTable.resize({ width: x })
+      this.gantterTable.resize({ width: width - (x || 0) })
+      this.gantterTable.style.x = x
+    })
   }
 }

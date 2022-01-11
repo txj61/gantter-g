@@ -1,11 +1,10 @@
-import { BaseStyleProps } from '@antv/g'
+import { RectStyleProps } from '@antv/g'
 
 export interface IProps{
-  style?: BaseStyleProps
+  style?: RectStyleProps
   isVertical?: boolean
   width?: number
   height?: number
-  position: number
 }
 
 export interface IParams {

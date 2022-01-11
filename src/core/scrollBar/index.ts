@@ -39,6 +39,8 @@ export default class ScrollBar extends Group {
 
   private isMousedown: boolean = false;
 
+  private isRender: boolean = false
+
   private _emitEvents: IEmitEvent = {
     onScroll: null,
   };
@@ -60,6 +62,7 @@ export default class ScrollBar extends Group {
     this._minThumbLen = minThumbLen || this._minThumbLen;
 
     if (this._scrollTotalLength > this._scrollAreaLength) {
+      this.isRender = true
       this.renderControllor();
       this.renderThumb();
       this.bindEvent();
@@ -76,6 +79,27 @@ export default class ScrollBar extends Group {
 
   public set scrollAreaLength(v: number) {
     this._scrollAreaLength = v;
+    this.thumbLen =
+      (this._scrollAreaLength / this._scrollTotalLength) *
+      this.scrollAreaLength;
+    this.thumbLen = this.thumbLen < this._minThumbLen ? this._minThumbLen : this.thumbLen;
+    if(this._isVertical){
+      this.controllor.style.height = v
+      this.thumb.style.height = this.thumbLen
+    }else{
+      this.controllor.style.width = v
+      this.thumb.style.width = this.thumbLen
+    }
+    if(this._scrollTotalLength > this._scrollAreaLength && !this.isRender){
+      this.isRender = true
+      this.renderControllor();
+      this.renderThumb();
+      this.bindEvent();
+    }else if(this._scrollTotalLength < this._scrollAreaLength && this.isRender){
+      this.isRender = false
+      this.removeChild(this.controllor)
+      this.removeChild(this.thumb)
+    }
   }
 
   public get scrollAreaLength(): number {

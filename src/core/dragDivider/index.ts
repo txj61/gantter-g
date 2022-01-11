@@ -1,36 +1,19 @@
-import { Group, Rect } from '@antv/g'
-import type { Rect as IRect } from '@antv/g'
+import { Rect } from '@antv/g'
 import { IProps, IEmitEvent } from './interface'
-import { styles, theme } from '@/store'
-import { IPoint } from '@/common/interface'
 
-export default class DragDivider extends Group {
+export default class DragDivider extends Rect {
 
   private isVertical: boolean = true
 
-  private width: number
-
-  private height!: number
-
-  private divider!: IRect
-
-  private _emitEvents!: IEmitEvent
-
-  private diff!: number
-
-  private point!: IPoint
+  private _emitEvents: IEmitEvent = {
+    onDrag: () => {}
+  }
 
   private isMouseDown: boolean = false
 
-  constructor({ style, isVertical, width, height, position }: IProps){
+  constructor({ style }: IProps){
     super({ style })
 
-    this.isVertical = isVertical ?? this.isVertical
-    this.width = this.isVertical ? styles.dragWeight : (width || 0)
-    this.height = this.isVertical ? (height || 0) : styles.dragWeight
-    this.point = this.isVertical ? { x: position, y: 0 } : { x: 0, y: position }
-
-    this.render()
     this.bindEvent()
   }
 
@@ -41,33 +24,29 @@ export default class DragDivider extends Group {
     this._emitEvents[eventName] = event;
   }
 
-  private render(){
-    this.divider = new Rect({
-      style: {
-        width: this.width,
-        height: this.height,
-        x: this.isVertical ? -this.width / 2 : 0,
-        y: this.isVertical ? 0 : -this.height / 2,
-        fill: theme.dragDividerColor,
-        cursor: this.isVertical ? 'col-resize' : 'row-resize'
-      }
-    })
-    this.appendChild(this.divider)
+  private bindEvent(){
+    this.addEventListener('mousedown', this.onMouseDown.bind(this))
+    document.body.addEventListener('mousemove', this.onMouseMove.bind(this))
+    document.body.addEventListener('mouseup', this.onMouseUp.bind(this))
   }
 
-  private bindEvent(){
-    this.divider.addEventListener('mousedown', (event: {[key: string]: any}) => {
-      this.isMouseDown = true
-      if(this.isVertical){
-        this.diff = event.client.x - this.point.x
-      }else{
-        this.diff = event.client.y - this.point.y
+  private onMouseDown(){
+    this.isMouseDown = true
+  }
+
+  private onMouseMove(event: {[key: string]: any}){
+    event.preventDefault()
+    if(this.isMouseDown && this.isVertical){
+      this.style.x += event.movementX
+      if(this._emitEvents.onDrag){
+        this._emitEvents.onDrag({
+          x: this.style.x
+        })
       }
-    })
-    this.divider.addEventListener('mousemove', (event: {[key: string]: any}) => {
-      if(this.isMouseDown && this.isVertical){
-        this.style.x = event.client.x - this.diff
-      }
-    })
+    }
+  }
+
+  private onMouseUp(){
+    this.isMouseDown = false
   }
 }

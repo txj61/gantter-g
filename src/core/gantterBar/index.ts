@@ -48,20 +48,36 @@ export default class GantterBar extends Group {
       if(this.dateUnit === 'year'){
         startIndex = this.columns.findIndex(i => i.key === filterDate(new Date(item[this.replaceKey.start]), 'YYYY'))
         endIndex = this.columns.findIndex(i => i.key === filterDate(new Date(item[this.replaceKey.end]), 'YYYY'))
-
       }else if(this.dateUnit === 'month'){
         startIndex = this.columns.findIndex(i => i.key === filterDate(new Date(item[this.replaceKey.start]), 'YYYY-MM'))
         endIndex = this.columns.findIndex(i => i.key === filterDate(new Date(item[this.replaceKey.end]), 'YYYY-MM'))
+      }else if(this.dateUnit === 'day'){
+        startIndex = this.columns.findIndex(i => i.key === filterDate(new Date(item[this.replaceKey.start]), 'YYYY-MM-DD'))
+        endIndex = this.columns.findIndex(i => i.key === filterDate(new Date(item[this.replaceKey.end]), 'YYYY-MM-DD'))
       }
-      this.appendChild(new Rect({
+      const bar = new Rect({
         style: {
           x: startIndex * this.cellWidth,
           y: (this.cellHeight - this.barHeight) / 2,
           width: (endIndex - startIndex + 1) * this.cellWidth,
           height: this.barHeight,
           fill: item.color || this.barColor(item[this.replaceKey.start], item[this.replaceKey.end])
-        }
-      }))
+        },
+      })
+      this.appendChild(bar)
+      bar.addEventListener('mouseover', () => {
+        bar.style.shadowBlur = styles.gantterBarshadowSize
+        bar.style.shadowColor = theme.gantterBarShadowColor
+        this.onMouseOver(item)
+      })
+      bar.addEventListener('mouseout', () => {
+        bar.style.shadowBlur = undefined
+        bar.style.shadowColor = undefined
+      })
     })
+  }
+
+  private onMouseOver(event: IGantterItem){
+    console.log(event)
   }
 }

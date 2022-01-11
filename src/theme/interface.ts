@@ -53,4 +53,6 @@ export interface ITheme {
   readonly gantterUnbeginColor?: string
   // 甘特图分割线
   readonly gantterDividerColor?: string
+  // 甘特图鼠标移入阴影颜色
+  readonly gantterBarShadowColor?: string
 }

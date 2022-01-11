@@ -8,8 +8,8 @@
 import { Group, Rect, Line } from '@antv/g';
 import type { Group as IGroup } from '@antv/g'
 import { IProps, IEmitEvent } from './interface';
-import { IGantterReplaceKeys, IData, IDateUnit, IColumn } from '@/common/interface'
-import { totalDateRange, dateUnit, gantterColumns } from '@/util/util'
+import { IGantterReplaceKeys, IData, IDateUnit, IColumn, ISize } from '@/common/interface'
+import { totalDateRange, dateUnit, gantterColumns, filterDate } from '@/util/util'
 import store, { styles, theme } from '@/store'
 import { BaseHeader, GantterBar, ScrollBar } from '@/core'
 import type { BaseHeader as IBaseHeader, ScrollBar as IScrollBar } from '@/core'
@@ -96,6 +96,16 @@ export default class GantterTable extends Group {
     this._emitEvents[eventName] = event;
   }
 
+  public resize({ width, height }: ISize){
+    this.width = width ?? this.width
+    this.height = height ?? this.height
+    this.style.clipPath.style.width = this.width
+    this.style.clipPath.style.height = this.height
+    this.content.style.clipPath.style.width = this.width
+    this.content.style.clipPath.style.height = this.height - styles.tableCellHeight * 2
+    this.scrollBar.scrollAreaLength = this.width
+  }
+
   private renderHeader(){
     if(this.unit === 'year'){
       this.header1 = new BaseHeader({
@@ -132,9 +142,7 @@ export default class GantterTable extends Group {
             }
           })
         },
-        textStyle: {
-          textAlign: 'center'
-        }
+        textStyle: { textAlign: 'center' }
       })
       this.header2 = new BaseHeader({
         columns: this.columns.map(item => ({ ...item, name: `${new Date(item.name).getMonth() + 1}月` })),
@@ -152,7 +160,40 @@ export default class GantterTable extends Group {
       this.appendChild(this.header2)
       this.totalWidth = this.header1.style.clipPath.style.width
     }else if(this.unit === 'day'){
-
+      const months: IColumn[] = Array.from(
+        new Set(this.columns.map(item => (filterDate(new Date(item.key), 'YYYY-MM'))))
+      ).map(item => ({
+        key: item,
+        name: `${item.split('-')[0]}年${item.split('-')[1]}月`,
+        width: this.columns.filter(i => filterDate(new Date(i.key), 'YYYY-MM') === item).length * this.cellWidth
+      }))
+      this.header1 = new BaseHeader({
+        columns: months,
+        style: {
+          clipPath: new Rect({
+            style: {
+              width: this.columns.length * this.cellWidth,
+              height: styles.tableCellHeight
+            }
+          })
+        },
+        textStyle: { textAlign: 'center' }
+      })
+      this.header2 = new BaseHeader({
+        columns: this.columns.map(item => ({ ...item, name: `${new Date(item.name).getDate()}`})),
+        style: {
+          y: styles.tableCellHeight,
+          clipPath: new Rect({
+            style: {
+              width: this.columns.length * this.cellWidth,
+              height: styles.tableCellHeight
+            }
+          })
+        }
+      })
+      this.appendChild(this.header1)
+      this.appendChild(this.header2)
+      this.totalWidth = this.header1.style.clipPath.style.width
     }
   }
 

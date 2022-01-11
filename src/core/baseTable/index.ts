@@ -8,7 +8,7 @@
 import { Group, Rect } from '@antv/g';
 import type { Group as IGroup } from '@antv/g';
 import { IProps, IEmitEvent } from './interface';
-import { IColumn, IData } from '@/common/interface'
+import { IColumn, IData, ISize } from '@/common/interface'
 import { BaseRow, BaseHeader, ScrollBar } from '@/core';
 import { styles } from '@/store';
 import type { BaseRow as IBaseRow, BaseHeader as IBaseHeader, ScrollBar as IScrollBar } from '@/core'
@@ -20,9 +20,9 @@ export default class BaseTable extends Group {
 
   private readonly data: IData[];
 
-  private readonly width: number;
+  private width: number;
 
-  private readonly height: number;
+  private height: number;
 
   private readonly rowHeight: number = styles.tableCellHeight;
 
@@ -90,7 +90,17 @@ export default class BaseTable extends Group {
     this._emitEvents[eventName] = event;
   }
 
-  public renderHeader() {
+  public resize({ width, height }: ISize){
+    this.width = width ?? this.width
+    this.height = height ?? this.height
+    this.style.clipPath.style.width = this.width
+    this.style.clipPath.style.height = this.height
+    this.content.style.clipPath.style.width = this.width
+    this.content.style.clipPath.style.height = this.height - this._headerHeight
+    this.scrollBar.scrollAreaLength = this.width
+  }
+
+  private renderHeader() {
     this.header = new BaseHeader({
       columns: this.columns,
       style: {
@@ -105,13 +115,13 @@ export default class BaseTable extends Group {
     this.appendChild(this.header);
   }
 
-  public renderRows() {
+  private renderRows() {
     this.content = new Group({
       style: {
         y: this._headerHeight,
         clipPath: new Rect({
           style: {
-            width: this.totalWidth,
+            width: this.width,
             height: this.height - this._headerHeight,
           },
         }),

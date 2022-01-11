@@ -66,4 +66,6 @@ export interface IStyles {
   readonly gantterBarHeight: number
   // 甘特图分割线
   readonly gantterDividerSize: number
+  // 甘特图阴影大小
+  readonly gantterBarshadowSize: number
 }

@@ -31,7 +31,8 @@ const baseStyles: IStyles = {
 
   gantterCellWidth: 52,
   gantterBarHeight: 20,
-  gantterDividerSize: .5
+  gantterDividerSize: .5,
+  gantterBarshadowSize: 6
 }
 
 export default baseStyles

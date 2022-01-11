@@ -51,3 +51,8 @@ export interface IData extends IGantterData {
 }
 
 export type IDateUnit = 'year' | 'month' | 'week' | 'day'
+
+export interface ISize {
+  width?: number
+  height?: number
+}
