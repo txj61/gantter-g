@@ -35,13 +35,14 @@ export default (props: Props) => {
       ...store.state.styles,
       ...styles
     } : store.state.styles)
-    store.setter('container', document.getElementById('gantter-g-view'))
+
     const canvas = new Canvas({
       container: 'gantter-g-view',
       width: Number(width) || styles?.defaultWidth || 1000,
       height: Number(height) || styles?.defaultHeight || 500,
       renderer: new Renderer()
     })
+    store.setter('container', canvas)
 
     const layout = new Layout({
       width: Number(width) || styles?.defaultWidth || 1000,

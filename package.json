@@ -48,8 +48,8 @@
     "dist/"
   ],
   "dependencies": {
-    "@antv/g": "^5.0.1",
-    "@antv/g-canvas": "^1.0.1",
+    "@antv/g": "^5.0.8",
+    "@antv/g-canvas": "^1.0.7",
     "@babel/runtime": "^7",
     "lodash": "^4.17.21",
     "throttle-debounce-ts": "^1.1.1"

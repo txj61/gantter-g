@@ -66,9 +66,7 @@ export default class BaseTable extends Group {
 
   public set tableScrollTop(v: number) {
     this._scrollTop = v;
-    this.rows.forEach((item, index) => {
-      item.style.y = this.rowHeight * index + this.tableScrollTop;
-    });
+    this.scrollContent.style.y = v
   }
 
   public get tableScrollTop(): number {
@@ -129,8 +127,10 @@ export default class BaseTable extends Group {
     });
     this.appendChild(this.content);
 
-    this.scrollContent = new Group({
+    this.scrollContent = new Rect({
       style: {
+        width: this.totalWidth,
+        height: this.totalHeight,
         y: this.tableScrollTop
       }
     })

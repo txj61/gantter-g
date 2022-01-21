@@ -92,13 +92,10 @@ export default class ScrollBar extends Group {
     }
     if(this._scrollTotalLength > this._scrollAreaLength && !this.isRender){
       this.isRender = true
-      this.renderControllor();
-      this.renderThumb();
-      this.bindEvent();
+      this.show()
     }else if(this._scrollTotalLength < this._scrollAreaLength && this.isRender){
       this.isRender = false
-      this.removeChild(this.controllor)
-      this.removeChild(this.thumb)
+      this.hide()
     }
   }
 
