@@ -22,10 +22,11 @@ interface Props{
   theme?: Partial<ITheme>
   styles?: Partial<IStyles>,
   gantterReplaceKeys?: IGantterReplaceKeys
+  showOrder?: boolean | string
 }
 
 export default (props: Props) => {
-  const { theme, styles, width, height, columns, dataSource, gantterReplaceKeys } = props
+  const { theme, styles, width, height, columns, dataSource, gantterReplaceKeys, showOrder } = props
   useEffect(() => {
     store.setter('theme', theme ? {
       ...store.state.theme,
@@ -35,6 +36,7 @@ export default (props: Props) => {
       ...store.state.styles,
       ...styles
     } : store.state.styles)
+    store.setter('showOrder', showOrder ?? store.getter('showOrder'))
 
     const canvas = new Canvas({
       container: 'gantter-g-view',

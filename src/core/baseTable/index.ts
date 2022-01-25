@@ -10,7 +10,7 @@ import type { Group as IGroup } from '@antv/g';
 import { IProps, IEmitEvent } from './interface';
 import { IColumn, IData, ISize } from '@/common/interface'
 import { BaseRow, BaseHeader, ScrollBar } from '@/core';
-import { styles } from '@/store';
+import store, { styles } from '@/store';
 import type { BaseRow as IBaseRow, BaseHeader as IBaseHeader, ScrollBar as IScrollBar } from '@/core'
 
 export default class BaseTable extends Group {
@@ -42,6 +42,10 @@ export default class BaseTable extends Group {
 
   private _headerHeight: number = styles.tableCellHeight * 2;
 
+  private showOrder: boolean | string = store.getter('showOrder')
+
+  private orderCellWidth: number = styles.tableOrderCellWidth || 50
+
   private _emitEvents: IEmitEvent = {
     onScroll: undefined,
   };
@@ -56,6 +60,7 @@ export default class BaseTable extends Group {
     this.totalWidth = this.columns.reduce((total, item) => {
       return item.width ? total + item.width : total + styles.tableCellWidth
     }, 0)
+    this.totalWidth += this.showOrder ? this.orderCellWidth : 0
 
     this.renderRows();
     this.renderHeader();
@@ -100,7 +105,10 @@ export default class BaseTable extends Group {
 
   private renderHeader() {
     this.header = new BaseHeader({
-      columns: this.columns,
+      columns: this.showOrder ? [
+        { name: '序号', key: this.showOrder === true ? 'id' : this.showOrder, width: this.orderCellWidth },
+        ...this.columns
+      ] : this.columns,
       style: {
         clipPath: new Rect({
           style: {
@@ -139,8 +147,14 @@ export default class BaseTable extends Group {
     this.data.forEach((item, index) => {
       this.rows.push(
         new BaseRow({
-          columns: this.columns,
-          data: item,
+          columns: this.showOrder ? [
+            { name: '序号', key: this.showOrder === true ? 'id' : this.showOrder, width: this.orderCellWidth },
+            ...this.columns
+          ] : this.columns,
+          data: this.showOrder ? {
+            ...item,
+            [this.showOrder === true ? 'id' : this.showOrder]: index.toString()
+          } : item,
           isOdd: Boolean(index % 2),
           style: {
             x: 0,

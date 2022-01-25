@@ -59,6 +59,8 @@ export interface IStyles {
     | number;
   // 表格单元格padding
   readonly tableCellPadding?: number;
+  // 表格序号列宽度
+  readonly tableOrderCellWidth?: number
 
   // 甘特图单元格宽
   readonly gantterCellWidth: number;
@@ -68,4 +70,7 @@ export interface IStyles {
   readonly gantterDividerSize: number
   // 甘特图阴影大小
   readonly gantterBarshadowSize: number
+
+  // 气泡卡片宽
+  readonly popoverWidth: number
 }

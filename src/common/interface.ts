@@ -56,3 +56,16 @@ export interface ISize {
   width?: number
   height?: number
 }
+
+export interface IGantterBarOverProps {
+  x: number
+  y: number
+  width: number
+  height: number
+  [key: Required<IGantterReplaceKeys>[keyof Omit<IGantterReplaceKeys, 'list'>]]: string | number
+}
+
+export interface IEvent {
+  onMouseOverGantterBar?: (props: IGantterBarOverProps) => void
+  onMouseOutGantterBar?: () => void
+}

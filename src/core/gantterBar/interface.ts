@@ -1,8 +1,15 @@
-import { BaseStyleProps } from '@antv/g';
+import { BaseStyleProps, DisplayObjectConfig } from '@antv/g';
 import { IGantterItem, IColumn } from '@/common/interface'
-
-export interface IProps {
+import type { Popover as IPopover } from '@/core'
+export interface IProps extends DisplayObjectConfig<BaseStyleProps> {
   columns?: IColumn[]
-  style?: BaseStyleProps
   list?: IGantterItem[]
+  popover: IPopover
+}
+
+export interface Position {
+  x: number
+  y: number
+  width: number
+  height: number
 }

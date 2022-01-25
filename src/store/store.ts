@@ -9,14 +9,17 @@ import { ITheme } from '@/theme/interface'
 import { IStyles } from '@/styles/interface'
 import { baseTheme } from '@/theme'
 import { baseStyles } from '@/styles'
-import { IDateUnit, IGantterReplaceKeys } from '@/common/interface'
-
+import { IDateUnit, IGantterReplaceKeys, IEvent } from '@/common/interface'
+import type { Popover as IPopover } from '@/core'
 
 export interface IState {
   theme: ITheme
   styles: IStyles
   dateUnit: IDateUnit
+  showOrder: boolean | string
   gantterReplaceKeys: Required<IGantterReplaceKeys>
+  popover?: IPopover
+  events: IEvent
   [key: string]: any
 }
 
@@ -32,7 +35,9 @@ class Store {
       content: 'content',
       color: ''
     },
-    dateUnit: 'day'
+    dateUnit: 'day',
+    showOrder: true,
+    events: {}
   }
 
   public setter(key: keyof IState, value: any){

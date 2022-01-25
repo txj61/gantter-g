@@ -7,8 +7,8 @@
  */
 
 import { Group, Rect, BaseStyleProps } from '@antv/g';
-import { BaseTable, ScrollBar, GantterTable , DragDivider} from '@/core';
-import type { BaseTable as IBaseTable, ScrollBar as IScrollBar, GantterTable as IGantterTable, DragDivider as IDragDivider } from '@/core';
+import { BaseTable, ScrollBar, GantterTable , DragDivider, Popover } from '@/core';
+import type { BaseTable as IBaseTable, ScrollBar as IScrollBar, GantterTable as IGantterTable, DragDivider as IDragDivider, Popover as IPopover } from '@/core';
 import { IColumn } from '@/common/interface';
 import { styles, theme } from '@/store';
 import { IGantterReplaceKeys } from '@/common/interface'
@@ -31,6 +31,8 @@ export default class Layout extends Group {
   private gantterTable!: IGantterTable
 
   private dragDivider!: IDragDivider
+
+  private popover!: IPopover
 
   constructor({ width, height, columns, data, style, gantterReplaceKeys }: IProps) {
     super({ style });
@@ -60,10 +62,17 @@ export default class Layout extends Group {
       this.gantterTable.tableScrollTop = positonY
     });
 
+    // 气泡卡片
+    this.popover = new Popover({
+      zIndex: 9999
+    })
+    this.popover.hide()
+
     // 右侧甘特图
     this.gantterTable = new GantterTable({
       columns,
       data,
+      popover: this.popover,
       style: {
         x: store.getter('dragX'),
         clipPath: new Rect({
@@ -112,5 +121,7 @@ export default class Layout extends Group {
       this.gantterTable.resize({ width: width - (x || 0) })
       this.gantterTable.style.x = x
     })
+
+    this.appendChild(this.popover)
   }
 }

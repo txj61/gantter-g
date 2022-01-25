@@ -28,11 +28,14 @@ const baseStyles: IStyles = {
   tableRowDividerSize: .5,
   tableColDividerSize: .5,
   tableCellPadding: 8,
+  tableOrderCellWidth: 50,
 
   gantterCellWidth: 52,
   gantterBarHeight: 20,
   gantterDividerSize: .5,
-  gantterBarshadowSize: 6
+  gantterBarshadowSize: 6,
+
+  popoverWidth: 240
 }
 
 export default baseStyles

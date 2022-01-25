@@ -12,7 +12,7 @@ import { IGantterReplaceKeys, IData, IDateUnit, IColumn, ISize } from '@/common/
 import { totalDateRange, dateUnit, gantterColumns, filterDate } from '@/util/util'
 import store, { styles, theme } from '@/store'
 import { BaseHeader, GantterBar, ScrollBar } from '@/core'
-import type { BaseHeader as IBaseHeader, ScrollBar as IScrollBar } from '@/core'
+import type { BaseHeader as IBaseHeader, ScrollBar as IScrollBar, Popover as IPopover } from '@/core'
 
 export default class GantterTable extends Group {
 
@@ -38,6 +38,8 @@ export default class GantterTable extends Group {
 
   private content!: IGroup
 
+  private popover!: IPopover
+
   private scrollContent!: IGroup
 
   private scrollBar!: IScrollBar
@@ -52,13 +54,14 @@ export default class GantterTable extends Group {
     onScroll: undefined,
   };
 
-  constructor({ style, data }: IProps) {
+  constructor({ style, data, popover }: IProps) {
     super({ style });
 
     this.data = data || []
     this.totalRangeDate = totalDateRange(this.data, this.replaceKey)
     this.width = this.style.clipPath.style.width
     this.height = this.style.clipPath.style.height
+    this.popover = popover
 
     store.setter('dateUnit', dateUnit(this.totalRangeDate[0], this.totalRangeDate[1]))
     this.unit = store.getter('dateUnit')
@@ -254,6 +257,7 @@ export default class GantterTable extends Group {
         new GantterBar({
           list: item[this.replaceKey.list],
           columns: this.columns,
+          popover: this.popover,
           style: {
             x: 0,
             y: styles.tableCellHeight * index,

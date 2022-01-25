@@ -1,9 +1,10 @@
 import { Group, Rect } from '@antv/g'
-import { IProps } from './interface'
+import { IProps, Position } from './interface'
 import { IGantterItem, IColumn, IGantterReplaceKeys ,IDateUnit } from '@/common/interface'
 import store, { styles, theme } from '@/store'
 import { filterDate } from '@/util/util'
-
+import { Popover } from '@/core'
+import type { Popover as IPopover } from '@/core'
 export default class GantterBar extends Group {
 
   private replaceKey: Required<IGantterReplaceKeys> = store.getter('gantterReplaceKeys')
@@ -20,13 +21,16 @@ export default class GantterBar extends Group {
 
   private barHeight: number = styles.gantterBarHeight
 
-  constructor({ style, list, columns }: IProps){
-    super({ style })
+  public popover!: IPopover
+
+  constructor({ style, list, columns, name, id, popover }: IProps){
+    super({ style, name, id })
 
     this.list = list || []
     this.columns = columns || []
     this.cellWidth = this.columns.find(item => item.width)?.width || styles.gantterCellWidth
     this.cellHeight = this.style.clipPath.style.height
+    this.popover = popover
 
     this.render()
   }
@@ -68,16 +72,29 @@ export default class GantterBar extends Group {
       bar.addEventListener('mouseover', () => {
         bar.style.shadowBlur = styles.gantterBarshadowSize
         bar.style.shadowColor = theme.gantterBarShadowColor
-        this.onMouseOver(item)
+        this.onMouseOver(item, {
+          x: bar.getPosition()[0],
+          y: bar.getPosition()[1],
+          width: (endIndex - startIndex + 1) * this.cellWidth,
+          height: this.barHeight,
+        })
       })
       bar.addEventListener('mouseout', () => {
         bar.style.shadowBlur = undefined
         bar.style.shadowColor = undefined
+        this.onMouseOut()
       })
     })
   }
 
-  private onMouseOver(event: IGantterItem){
-    console.log(event)
+  private onMouseOver(event: IGantterItem, position: Position){
+    // this.popover.x = x + width / 2
+    // this.popover.y = y + height
+    this.popover.targetNodeParams = position
+    this.popover.show()
+  }
+
+  private onMouseOut(){
+    this.popover.hide()
   }
 }
