@@ -36,6 +36,7 @@ const baseTheme: ITheme = {
   gantterUnbeginColor: '#91d5ff',
   gantterDividerColor: '#cccccc',
   gantterBarShadowColor: '#003a8c',
+  gantterbarLineColor: '#cccccc',
 
   popoverBackground: '#ffffff',
   popoverShadowColor: '#999999'

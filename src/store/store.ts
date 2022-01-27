@@ -9,11 +9,9 @@ import { ITheme } from '@/theme/interface'
 import { IStyles } from '@/styles/interface'
 import { baseTheme } from '@/theme'
 import { baseStyles } from '@/styles'
-import { IDateUnit, IGantterReplaceKeys, ITooltip, IEvent } from '@/common/interface'
+import { IDateUnit, IGantterReplaceKeys, ITooltip, IEvent, IGantterBarText } from '@/common/interface'
 import type { Popover as IPopover } from '@/core'
-import { Canvas } from '@antv/g'
 import type { Canvas as ICanvas } from '@antv/g'
-import { Renderer } from '@antv/g-canvas'
 
 export interface IState {
   theme: ITheme
@@ -26,6 +24,7 @@ export interface IState {
   events: IEvent,
   container?: ICanvas
   dragX?: number
+  gantterBarText?: IGantterBarText
   // [key: string]: any
 }
 

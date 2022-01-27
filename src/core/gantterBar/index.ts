@@ -1,9 +1,8 @@
-import { Group, Rect } from '@antv/g'
+import { Group, Rect, Text } from '@antv/g'
 import { IProps, Position } from './interface'
 import { IGantterItem, IColumn, IGantterReplaceKeys ,IDateUnit } from '@/common/interface'
 import store, { styles, theme } from '@/store'
 import { filterDate } from '@/util/util'
-import { Popover } from '@/core'
 import type { Popover as IPopover } from '@/core'
 export default class GantterBar extends Group {
 
@@ -37,11 +36,11 @@ export default class GantterBar extends Group {
 
   private barColor(start: string, end: string): string{
     if(new Date(start) > new Date()){
-      return theme.gantterUnbeginColor || ''
+      return store.getter('theme').gantterUnbeginColor || ''
     }else if(new Date(end) < new Date()){
-      return theme.gantterStopColor || ''
+      return store.getter('theme').gantterStopColor || ''
     }else{
-      return theme.gantterProgressColor || ''
+      return store.getter('theme').gantterProgressColor || ''
     }
   }
 
@@ -65,10 +64,30 @@ export default class GantterBar extends Group {
           y: (this.cellHeight - this.barHeight) / 2,
           width: (endIndex - startIndex + 1) * this.cellWidth,
           height: this.barHeight,
-          fill: item.color || this.barColor(item[this.replaceKey.start], item[this.replaceKey.end])
+          fill: item.color || this.barColor(item[this.replaceKey.start], item[this.replaceKey.end]),
+          stroke: theme.gantterbarLineColor,
+          lineWidth: styles.gantterBarLineWidth,
+          radius: styles.gantterBarRadius
         },
       })
       this.appendChild(bar)
+      if(store.getter('gantterBarText')?.show){
+        const formatter = store.getter('gantterBarText')?.formatter
+        bar.appendChild(new Text({
+          style: {
+            text: (formatter && formatter(item).text.toString()) || '',
+            ...formatter && formatter(item).style,
+            padding: 5,
+            textBaseline: 'top',
+            clipPath: new Rect({
+              style: {
+                width: (endIndex - startIndex + 1) * this.cellWidth,
+                height: this.barHeight,
+              }
+            })
+          }
+        }))
+      }
       bar.addEventListener('mouseover', () => {
         bar.style.shadowBlur = styles.gantterBarshadowSize
         bar.style.shadowColor = theme.gantterBarShadowColor
@@ -88,13 +107,17 @@ export default class GantterBar extends Group {
   }
 
   private onMouseOver(event: IGantterItem, position: Position){
-    this.popover.content = event
-    this.popover.targetNodeParams = position
-    this.popover.show()
+    if(store.getter('tooltip')?.show){
+      this.popover.content = event
+      this.popover.targetNodeParams = position
+      this.popover.show()
+    }
   }
 
   private onMouseOut(){
-    this.popover.clear()
-    this.popover.hide()
+    if(store.getter('tooltip')?.show){
+      this.popover.clear()
+      this.popover.hide()
+    }
   }
 }

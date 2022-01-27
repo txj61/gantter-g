@@ -71,6 +71,11 @@ export interface ITooltip {
   formatter?: (item: IGantterItem) => { text: string | number, style?: Omit<TextStyleProps, 'text'> }[]
 }
 
+export interface IGantterBarText {
+  show?: boolean,
+  formatter?: (item: IGantterItem) => { text: string | number, style?: Omit<TextStyleProps, 'text'> }
+}
+
 export interface IEvent {
   onMouseOverGantterBar?: (props: IGantterBarOverProps) => void
   onMouseOutGantterBar?: () => void

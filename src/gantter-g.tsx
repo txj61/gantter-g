@@ -11,7 +11,7 @@ import { Renderer } from '@antv/g-canvas'
 import { Layout } from '@/core'
 import { ITheme } from '@/theme/interface'
 import { IStyles } from '@/styles/interface'
-import { IGantterReplaceKeys, IColumn, IData, ITooltip } from '@/common/interface'
+import { IGantterReplaceKeys, IColumn, IData, ITooltip, IGantterBarText } from '@/common/interface'
 import store from '@/store'
 
 interface Props{
@@ -24,10 +24,11 @@ interface Props{
   gantterReplaceKeys?: IGantterReplaceKeys
   showOrder?: boolean | string
   tooltip?: ITooltip
+  gantterBarText?: IGantterBarText
 }
 
 export default (props: Props) => {
-  const { theme, styles, width, height, columns, dataSource, gantterReplaceKeys, showOrder, tooltip } = props
+  const { theme, styles, width, height, columns, dataSource, gantterReplaceKeys, showOrder, tooltip, gantterBarText } = props
   useEffect(() => {
     store.setter('theme', theme ? {
       ...store.state.theme,
@@ -41,6 +42,10 @@ export default (props: Props) => {
     store.setter('tooltip', {
       ...store.getter('tooltip'),
       ...tooltip
+    })
+    store.setter('gantterBarText', {
+      ...store.getter('gantterBarText'),
+      ...gantterBarText
     })
 
     const canvas = new Canvas({

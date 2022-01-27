@@ -1,14 +1,10 @@
 import { Group, Rect, Text, TextStyleProps } from '@antv/g'
 import { IProps, ITargetParams } from './interface'
-import type { Rect as IRect, Canvas as ICanvas, Text as IText } from '@antv/g'
+import type { Rect as IRect } from '@antv/g'
 import store, { styles, theme } from '@/store'
-import { IGantterItem, IGantterReplaceKeys, ITooltip } from '@/common/interface'
+import { IGantterItem } from '@/common/interface'
 
 export default class Popover extends Group {
-
-  // private placementH: 'left' | 'center' | 'right' | 'auto' = 'auto'
-
-  // private placementV: 'top' | 'bottom' | 'auto' = 'auto'
 
   private backgroundRect!: IRect
 
@@ -21,7 +17,7 @@ export default class Popover extends Group {
   private defaultTextStyle: Partial<TextStyleProps> = {
     textBaseline: 'top',
     textAlign: 'left',
-    padding: 5,
+    padding: styles.popoverPadding,
     wordWrapWidth: styles.popoverWidth - styles.popoverTextPadding * 2,
     wordWrap: true
   }
@@ -70,10 +66,10 @@ export default class Popover extends Group {
         }
       })
       this.appendChild(text)
-      this.height += text.getBoundingClientRect().height
+      this.height += text.getBoundingClientRect().height + styles.popoverTextPadding
     })
 
-    this.backgroundRect.style.height = this.height + 15
+    this.backgroundRect.style.height = this.height + styles.popoverPadding * 2
   }
 
   public clear(){
@@ -90,7 +86,8 @@ export default class Popover extends Group {
         height: this.height,
         fill: theme.popoverBackground,
         shadowBlur: styles.popoverShadowBlur,
-        shadowColor: theme.popoverShadowColor
+        shadowColor: theme.popoverShadowColor,
+        radius: styles.popoverRadius
       }
     })
     this.appendChild(this.backgroundRect)

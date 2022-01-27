@@ -70,6 +70,10 @@ export interface IStyles {
   readonly gantterDividerSize: number
   // 甘特图阴影大小
   readonly gantterBarshadowSize: number
+  // 甘特图描边大小
+  readonly gantterBarLineWidth: number
+  // 甘特图图形圆角
+  readonly gantterBarRadius: number
 
   // 气泡卡片宽
   readonly popoverWidth: number
@@ -77,9 +81,8 @@ export interface IStyles {
   readonly popoverTextPadding: number
   // 气泡卡阴影大小
   readonly popoverShadowBlur: number
-  // 气泡卡标题字号
-  // readonly popoverTitleFontSize: number
-  // // 气泡卡标题字粗细
-  // readonly popoverTitleFontWeight: 'normal' | 'bold' | 'bolder' | 'lighter' | number
-  // // 气泡卡
+  // 气泡卡padding
+  readonly popoverPadding: number
+  // 气泡卡圆角
+  readonly popoverRadius: number
 }

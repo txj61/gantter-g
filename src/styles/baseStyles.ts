@@ -34,10 +34,14 @@ const baseStyles: IStyles = {
   gantterBarHeight: 20,
   gantterDividerSize: .5,
   gantterBarshadowSize: 6,
+  gantterBarLineWidth: 1,
+  gantterBarRadius: 4,
 
   popoverWidth: 240,
   popoverTextPadding: 5,
-  popoverShadowBlur: 10
+  popoverShadowBlur: 10,
+  popoverPadding: 8,
+  popoverRadius: 5
 }
 
 export default baseStyles
