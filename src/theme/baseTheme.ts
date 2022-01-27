@@ -35,7 +35,10 @@ const baseTheme: ITheme = {
   gantterProgressColor: '#ffbb96',
   gantterUnbeginColor: '#91d5ff',
   gantterDividerColor: '#cccccc',
-  gantterBarShadowColor: '#003a8c'
+  gantterBarShadowColor: '#003a8c',
+
+  popoverBackground: '#ffffff',
+  popoverShadowColor: '#999999'
 }
 
 export default baseTheme

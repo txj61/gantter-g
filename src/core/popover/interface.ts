@@ -1,4 +1,4 @@
-import { DisplayObjectConfig, BaseStyleProps} from '@antv/g'
+import { DisplayObjectConfig, BaseStyleProps } from '@antv/g'
 
 export interface IProps extends DisplayObjectConfig<BaseStyleProps> {
 

@@ -88,13 +88,13 @@ export default class GantterBar extends Group {
   }
 
   private onMouseOver(event: IGantterItem, position: Position){
-    // this.popover.x = x + width / 2
-    // this.popover.y = y + height
+    this.popover.content = event
     this.popover.targetNodeParams = position
     this.popover.show()
   }
 
   private onMouseOut(){
+    this.popover.clear()
     this.popover.hide()
   }
 }

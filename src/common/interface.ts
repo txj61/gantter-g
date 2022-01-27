@@ -5,6 +5,7 @@
  * @LastEditors: Anthan
  * @Description:
  */
+import { TextStyleProps } from '@antv/g'
 import { ITheme } from '@/theme/interface'
 
 export interface IBaseShape {
@@ -63,6 +64,11 @@ export interface IGantterBarOverProps {
   width: number
   height: number
   [key: Required<IGantterReplaceKeys>[keyof Omit<IGantterReplaceKeys, 'list'>]]: string | number
+}
+
+export interface ITooltip {
+  show?: boolean
+  formatter?: (item: IGantterItem) => { text: string | number, style?: Omit<TextStyleProps, 'text'> }[]
 }
 
 export interface IEvent {

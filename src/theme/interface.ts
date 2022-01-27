@@ -55,4 +55,9 @@ export interface ITheme {
   readonly gantterDividerColor?: string
   // 甘特图鼠标移入阴影颜色
   readonly gantterBarShadowColor?: string
+
+  // 气泡卡片背景色
+  readonly popoverBackground?: string
+  // 气泡卡片阴影颜色
+  readonly popoverShadowColor?: string
 }

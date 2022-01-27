@@ -73,4 +73,13 @@ export interface IStyles {
 
   // 气泡卡片宽
   readonly popoverWidth: number
+  // 气泡卡padding
+  readonly popoverTextPadding: number
+  // 气泡卡阴影大小
+  readonly popoverShadowBlur: number
+  // 气泡卡标题字号
+  // readonly popoverTitleFontSize: number
+  // // 气泡卡标题字粗细
+  // readonly popoverTitleFontWeight: 'normal' | 'bold' | 'bolder' | 'lighter' | number
+  // // 气泡卡
 }

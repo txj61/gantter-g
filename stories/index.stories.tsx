@@ -42,6 +42,31 @@ export const YourStory = () => {
         list: 'distribution',
         title: 'name'
       }}
+      tooltip={{
+        formatter: value => {
+          return [
+            {
+              text: value.name,
+              style: {
+                fontSize: 14,
+                fontWeight: 'bold'
+              }
+            },
+            {
+              text: `${value.start} - ${value.end}`,
+              style: {
+                fontSize: 14
+              }
+            },
+            {
+              text: `周期：${(new Date(value.end).getTime() - new Date(value.start).getTime()) / (1000 * 3600 * 24)}天`,
+              style: {
+                fontSize: 14
+              }
+            }
+          ]
+        }
+      }}
     />
   )
 }

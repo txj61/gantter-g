@@ -50,7 +50,7 @@ export default class Layout extends Group {
       style: {
         clipPath: new Rect({
           style: {
-            width: store.getter('dragX'),
+            width: store.getter('dragX') || 0,
             height,
           },
         }),
@@ -77,7 +77,7 @@ export default class Layout extends Group {
         x: store.getter('dragX'),
         clipPath: new Rect({
           style: {
-            width: width - store.getter('dragX'),
+            width: width - (store.getter('dragX') || 0),
             height,
           }
         })

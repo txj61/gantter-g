@@ -57,6 +57,15 @@
     gl-matrix "^3.1.0"
     tslib "^2.3.1"
 
+"@antv/g-math@^1.0.8":
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/@antv/g-math/-/g-math-1.0.8.tgz#c2ee5f9c89c6a72538090f08122de697283705c9"
+  integrity sha512-aEXTzEMSsOJGKtirMpWB55v4ABrXgT0pZ9lhIBF2lSXDvIHHF5YQuzll8cIdVj9KvS5SWleqXlm5N5IORHz0Sw==
+  dependencies:
+    "@antv/util" "^2.0.13"
+    gl-matrix "^3.1.0"
+    tslib "^2.3.1"
+
 "@antv/g-plugin-canvas-picker@^1.0.7":
   version "1.0.7"
   resolved "https://registry.yarnpkg.com/@antv/g-plugin-canvas-picker/-/g-plugin-canvas-picker-1.0.7.tgz#8aa27ca84a70093d5db2dc13e74eeb19230fe341"
@@ -88,12 +97,12 @@
   dependencies:
     tslib "^2.3.1"
 
-"@antv/g@^5.0.8":
-  version "5.0.8"
-  resolved "https://registry.yarnpkg.com/@antv/g/-/g-5.0.8.tgz#9beb606d8157bd24458d5d4e310ac31815085c8b"
-  integrity sha512-s99BWzaKx5Hm9XJ9fZ+IMYRfMQCtiIYN886GgrLgQbX+HQ/IcMsVWKBQETC9RtPljzePrAN8hXBXc70sPpSn1g==
+"@antv/g@^5.0.9":
+  version "5.0.9"
+  resolved "https://registry.yarnpkg.com/@antv/g/-/g-5.0.9.tgz#5b99fd0509da4032bab6d1ff1ebdd93b0adae194"
+  integrity sha512-XAGnt42XT/l5R/eMuPJmyNifecgVMpP1YYpYV3Rd6nqOsgQA3y7qJvWn4DkdbL+4HXg6OjwwH+lIKwP9WIT1ew==
   dependencies:
-    "@antv/g-math" "^1.0.7"
+    "@antv/g-math" "^1.0.8"
     "@antv/path-util" "^2.0.14"
     "@antv/util" "^2.0.13"
     d3-color "^1.4.0"

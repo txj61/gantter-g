@@ -35,7 +35,9 @@ const baseStyles: IStyles = {
   gantterDividerSize: .5,
   gantterBarshadowSize: 6,
 
-  popoverWidth: 240
+  popoverWidth: 240,
+  popoverTextPadding: 5,
+  popoverShadowBlur: 10
 }
 
 export default baseStyles

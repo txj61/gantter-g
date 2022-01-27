@@ -9,8 +9,11 @@ import { ITheme } from '@/theme/interface'
 import { IStyles } from '@/styles/interface'
 import { baseTheme } from '@/theme'
 import { baseStyles } from '@/styles'
-import { IDateUnit, IGantterReplaceKeys, IEvent } from '@/common/interface'
+import { IDateUnit, IGantterReplaceKeys, ITooltip, IEvent } from '@/common/interface'
 import type { Popover as IPopover } from '@/core'
+import { Canvas } from '@antv/g'
+import type { Canvas as ICanvas } from '@antv/g'
+import { Renderer } from '@antv/g-canvas'
 
 export interface IState {
   theme: ITheme
@@ -19,8 +22,11 @@ export interface IState {
   showOrder: boolean | string
   gantterReplaceKeys: Required<IGantterReplaceKeys>
   popover?: IPopover
-  events: IEvent
-  [key: string]: any
+  tooltip?: ITooltip
+  events: IEvent,
+  container?: ICanvas
+  dragX?: number
+  // [key: string]: any
 }
 
 class Store {
@@ -37,10 +43,31 @@ class Store {
     },
     dateUnit: 'day',
     showOrder: true,
-    events: {}
+    events: {},
+    tooltip: {
+      show: true,
+      formatter: item => {
+        const replaceKeys: Required<IGantterReplaceKeys> = this.state.gantterReplaceKeys
+        return [
+          {
+            text: item[replaceKeys.title],
+            style: {
+              fontSize: 14,
+              fontWeight: 'bold',
+            }
+          },
+          {
+            text: `${item[replaceKeys.start]} - ${item[replaceKeys.end]}`,
+            style: {
+              fontSize: 14
+            }
+          }
+        ]
+      }
+    }
   }
 
-  public setter(key: keyof IState, value: any){
+  public setter<K extends keyof IState>(key: K, value: IState[K]){
     this.state[key] = value
   }
   public getter<K extends keyof IState>(key: K): IState[K]{
