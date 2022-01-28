@@ -61,11 +61,16 @@ export default class ScrollBar extends Group {
     this._position = position || this._position;
     this._minThumbLen = minThumbLen || this._minThumbLen;
 
+
+    this.renderControllor();
+    this.renderThumb();
+    this.bindEvent();
     if (this._scrollTotalLength > this._scrollAreaLength) {
       this.isRender = true
-      this.renderControllor();
-      this.renderThumb();
-      this.bindEvent();
+      this.show()
+    }else{
+      this.isRender = false
+      this.hide()
     }
   }
 

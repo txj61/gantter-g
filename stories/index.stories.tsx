@@ -34,8 +34,8 @@ export const YourStory = () => {
       columns={[
         { key: 'staffName', name: '姓名', width: 200 },
         { key: 'staffDepartName', name: '部门', width: 300 },
-        { key: 'jobs', name: '职位', width: 200 },
-        { key: 'userStatus_dictText', name: '状态', width: 100 }
+        // { key: 'jobs', name: '职位', width: 200 },
+        // { key: 'userStatus_dictText', name: '状态', width: 100 }
       ]}
       dataSource={data}
       gantterReplaceKeys={{
@@ -66,7 +66,7 @@ export const YourStory = () => {
         ])
       }}
       gantterBarText={{
-        show: true,
+        show: false,
         formatter: value =>({
           text: value.name
         })
