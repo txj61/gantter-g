@@ -6,10 +6,10 @@
  * @Description:表格行
  */
 import { Group, TextStyleProps } from '@antv/g'
-import { BaseCell } from '@/core'
+import { BaseCell } from '../'
 import { IProps } from './interface'
-import { IColumn } from '@/common/interface'
-import { theme, styles } from '@/store'
+import { IColumn } from '../../common/interface'
+import { theme, styles } from '../../store'
 
 export default class BaseRow extends Group {
 

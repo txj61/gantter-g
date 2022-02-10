@@ -7,12 +7,11 @@
  */
 
 import { Group, Rect, BaseStyleProps } from '@antv/g';
-import { BaseTable, ScrollBar, GantterTable , DragDivider, Popover } from '@/core';
-import type { BaseTable as IBaseTable, ScrollBar as IScrollBar, GantterTable as IGantterTable, DragDivider as IDragDivider, Popover as IPopover } from '@/core';
-import { IColumn } from '@/common/interface';
-import { styles, theme } from '@/store';
-import { IGantterReplaceKeys } from '@/common/interface'
-import store from '@/store'
+import { BaseTable, ScrollBar, GantterTable , DragDivider, Popover } from './';
+import type { BaseTable as IBaseTable, ScrollBar as IScrollBar, GantterTable as IGantterTable, DragDivider as IDragDivider, Popover as IPopover } from './';
+import { IColumn } from '../common/interface';
+import store, { styles, theme } from '../store';
+import { IGantterReplaceKeys } from '../common/interface'
 
 interface IProps {
   width: number;

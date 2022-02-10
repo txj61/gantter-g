@@ -1,9 +1,9 @@
 import { Group, Rect, Text } from '@antv/g'
 import { IProps, Position } from './interface'
-import { IGantterItem, IColumn, IGantterReplaceKeys } from '@/common/interface'
-import store, { styles, theme } from '@/store'
-import { filterDate } from '@/util/util'
-import type { Popover as IPopover } from '@/core'
+import { IGantterItem, IColumn, IGantterReplaceKeys } from '../../common/interface'
+import store, { styles, theme } from '../../store'
+import { filterDate } from '../../util/util'
+import type { Popover as IPopover } from '../'
 export default class GantterBar extends Group {
 
   private replaceKey: Required<IGantterReplaceKeys> = store.getter('gantterReplaceKeys')

@@ -8,11 +8,11 @@
 import { Group, Rect, Line } from '@antv/g';
 import type { Group as IGroup } from '@antv/g'
 import { IProps, IEmitEvent } from './interface';
-import { IGantterReplaceKeys, IData, IDateUnit, IColumn, ISize } from '@/common/interface'
-import { totalDateRange, dateUnit, gantterColumns, filterDate } from '@/util/util'
-import store, { styles, theme } from '@/store'
-import { BaseHeader, GantterBar, ScrollBar } from '@/core'
-import type { BaseHeader as IBaseHeader, ScrollBar as IScrollBar, Popover as IPopover } from '@/core'
+import { IGantterReplaceKeys, IData, IDateUnit, IColumn, ISize } from '../../common/interface'
+import { totalDateRange, dateUnit, gantterColumns, filterDate } from '../../util/util'
+import store, { styles, theme } from '../../store'
+import { BaseHeader, GantterBar, ScrollBar } from '../'
+import type { BaseHeader as IBaseHeader, ScrollBar as IScrollBar, Popover as IPopover } from '../'
 
 export default class GantterTable extends Group {
 

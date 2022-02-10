@@ -6,4 +6,4 @@
  * @Description:
  */
 
-export { default as baseStyles } from '@/styles/baseStyles'
+export { default as baseStyles } from './baseStyles'

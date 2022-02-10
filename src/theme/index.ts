@@ -6,4 +6,4 @@
  * @Description:
  */
 
-export { default as baseTheme } from '@/theme/baseTheme'
+export { default as baseTheme } from './baseTheme'

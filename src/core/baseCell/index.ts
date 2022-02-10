@@ -7,8 +7,8 @@
  */
 import { Group, Rect, Line, Text, RectStyleProps, TextStyleProps } from '@antv/g'
 import { IProps } from './interface'
-import { ILine } from '@/common/interface'
-import { styles, theme } from '@/store'
+import { ILine } from '../../common/interface'
+import { styles, theme } from '../../store'
 
 export default class BaseCell extends Group {
 

@@ -5,12 +5,12 @@
  * @LastEditors: Anthan
  * @Description:
  */
-import { ITheme } from '@/theme/interface'
-import { IStyles } from '@/styles/interface'
-import { baseTheme } from '@/theme'
-import { baseStyles } from '@/styles'
-import { IDateUnit, IGantterReplaceKeys, ITooltip, IEvent, IGantterBarText } from '@/common/interface'
-import type { Popover as IPopover } from '@/core'
+import { ITheme } from '../theme/interface'
+import { IStyles } from '../styles/interface'
+import { baseTheme } from '../theme'
+import { baseStyles } from '../styles'
+import { IDateUnit, IGantterReplaceKeys, ITooltip, IEvent, IGantterBarText } from '../common/interface'
+import type { Popover as IPopover } from '../core'
 import type { Canvas as ICanvas } from '@antv/g'
 
 export interface IState {

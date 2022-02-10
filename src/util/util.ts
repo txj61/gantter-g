@@ -1,4 +1,4 @@
-import { IData, IGantterReplaceKeys, IGantterItem, IDateUnit } from '@/common/interface';
+import { IData, IGantterReplaceKeys, IGantterItem, IDateUnit } from '../common/interface';
 
 // 格式化日期
 export const filterDate = (date: Date, format = 'YYYY-MM-DD'): string =>

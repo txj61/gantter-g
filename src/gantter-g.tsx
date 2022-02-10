@@ -8,12 +8,12 @@
 import React, { useEffect, useState } from 'react'
 import { Canvas } from '@antv/g'
 import { Renderer } from '@antv/g-canvas'
-import { Layout } from '@/core'
-import { ITheme } from '@/theme/interface'
-import { IStyles } from '@/styles/interface'
-import { IGantterReplaceKeys, IColumn, IData, ITooltip, IGantterBarText, IDateUnit } from '@/common/interface'
-import store from '@/store'
-import { Select } from '@/components'
+import { Layout } from './core'
+import { ITheme } from './theme/interface'
+import { IStyles } from './styles/interface'
+import { IGantterReplaceKeys, IColumn, IData, ITooltip, IGantterBarText, IDateUnit } from './common/interface'
+import store from './store'
+import { Select } from './components'
 
 interface Props{
   dataSource?: IData[]

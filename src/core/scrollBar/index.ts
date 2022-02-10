@@ -8,8 +8,8 @@
 import { Group, Rect } from '@antv/g';
 import type { Rect as IRact } from '@antv/g';
 import { IProp, IEmitEvent } from './interface';
-import { theme, styles } from '@/store';
-import { IPoint } from '@/common/interface';
+import { theme, styles } from '../../store';
+import { IPoint } from '../../common/interface';
 
 export default class ScrollBar extends Group {
   // 是否竖向

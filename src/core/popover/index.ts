@@ -1,8 +1,8 @@
 import { Group, Rect, Text, TextStyleProps } from '@antv/g'
 import { IProps, ITargetParams } from './interface'
 import type { Rect as IRect } from '@antv/g'
-import store, { styles, theme } from '@/store'
-import { IGantterItem } from '@/common/interface'
+import store, { styles, theme } from '../../store'
+import { IGantterItem } from '../../common/interface'
 
 export default class Popover extends Group {
 

@@ -5,7 +5,7 @@
  * @LastEditors: Anthan
  * @Description:基础样式
  */
-import { IStyles } from '@/styles/interface'
+import { IStyles } from './interface'
 
 const baseStyles: IStyles = {
   fontFamily: 'PingFang SC',

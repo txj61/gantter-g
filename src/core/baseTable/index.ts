@@ -8,10 +8,10 @@
 import { Group, Rect } from '@antv/g';
 import type { Group as IGroup } from '@antv/g';
 import { IProps, IEmitEvent } from './interface';
-import { IColumn, IData, ISize } from '@/common/interface'
-import { BaseRow, BaseHeader, ScrollBar } from '@/core';
-import store, { styles } from '@/store';
-import type { BaseRow as IBaseRow, BaseHeader as IBaseHeader, ScrollBar as IScrollBar } from '@/core'
+import { IColumn, IData, ISize } from '../../common/interface'
+import { BaseRow, BaseHeader, ScrollBar } from '../';
+import store, { styles } from '../../store';
+import type { BaseRow as IBaseRow, BaseHeader as IBaseHeader, ScrollBar as IScrollBar } from '../'
 
 export default class BaseTable extends Group {
   public totalHeight: number = 0;
