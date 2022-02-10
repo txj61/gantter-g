@@ -50,10 +50,7 @@
   "dependencies": {
     "@antv/g": "^5.0.9",
     "@antv/g-canvas": "^1.0.7",
-    "@babel/runtime": "^7",
-    "antd": "^4.18.5",
-    "lodash": "^4.17.21",
-    "throttle-debounce-ts": "^1.1.1"
+    "@babel/runtime": "^7"
   },
   "peerDependencies": {
     "react": "^17"

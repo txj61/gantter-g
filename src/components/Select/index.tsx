@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import './index.css'
 
 interface IOption {
   value: string,
@@ -21,10 +20,22 @@ export default (props: ISelectProps) => {
   }, [defaultValue])
 
   return (
-    <select className="g-select" defaultValue={defaultValue} value={selectedValue} onChange={(event) => {
-      setSelectedValue(event.target.value)
-      onChange && onChange(options.find(item => item.value === event.target.value))
-    }}>
+    <select
+      defaultValue={defaultValue}
+      value={selectedValue}
+      style={{
+        padding: '4px',
+        border: '1px solid #d9d9d9',
+        borderRadius: '2px',
+        transition: 'all 0.3s',
+        boxSizing: 'border-box',
+        height: '30px'
+      }}
+      onChange={(event) => {
+        setSelectedValue(event.target.value)
+        onChange && onChange(options.find(item => item.value === event.target.value))
+      }}
+    >
       {
         options.map(item => (
           <option value={item.value} key={item.value}>{item.label}</option>

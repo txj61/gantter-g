@@ -75,8 +75,7 @@ export default (props: Props) => {
     <div>
       <div style={{
         width: `${width}px`,
-        height: '30px',
-        padding: '8px 0',
+        height: '40px',
         display: 'flex',
       }}>
         <Select defaultValue={dateUnit} options={[
