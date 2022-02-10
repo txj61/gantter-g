@@ -188,12 +188,9 @@ export default class BaseTable extends Group {
   }
 
   private wheelEvent(event: any) {
-    if (this.tableScrollTop >= 0 && event.deltaY < 0) {
+    if (this.tableScrollTop >= event.deltaY) {
       this.tableScrollTop = 0;
-    } else if (
-      this.tableScrollTop <= -(this.totalHeight - this.content.style.clipPath.style.height) &&
-      event.deltaY > 0
-    ) {
+    } else if (this.tableScrollTop <= -(this.totalHeight - this.content.style.clipPath.style.height) + event.deltaY) {
       this.tableScrollTop = -(this.totalHeight - this.content.style.clipPath.style.height);
     } else {
       this.tableScrollTop -= event.deltaY / 2;

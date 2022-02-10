@@ -1,14 +1,12 @@
 import { Group, Rect, Text } from '@antv/g'
 import { IProps, Position } from './interface'
-import { IGantterItem, IColumn, IGantterReplaceKeys ,IDateUnit } from '@/common/interface'
+import { IGantterItem, IColumn, IGantterReplaceKeys } from '@/common/interface'
 import store, { styles, theme } from '@/store'
 import { filterDate } from '@/util/util'
 import type { Popover as IPopover } from '@/core'
 export default class GantterBar extends Group {
 
   private replaceKey: Required<IGantterReplaceKeys> = store.getter('gantterReplaceKeys')
-
-  private dateUnit: IDateUnit = store.getter('dateUnit')
 
   private list: IGantterItem[] = []
 
@@ -48,13 +46,13 @@ export default class GantterBar extends Group {
     this.list.forEach(item => {
       let startIndex: number = 0
       let endIndex: number = 1
-      if(this.dateUnit === 'year'){
+      if(store.getter('dateUnit') === 'year'){
         startIndex = this.columns.findIndex(i => i.key === filterDate(new Date(item[this.replaceKey.start]), 'YYYY'))
         endIndex = this.columns.findIndex(i => i.key === filterDate(new Date(item[this.replaceKey.end]), 'YYYY'))
-      }else if(this.dateUnit === 'month'){
+      }else if(store.getter('dateUnit') === 'month'){
         startIndex = this.columns.findIndex(i => i.key === filterDate(new Date(item[this.replaceKey.start]), 'YYYY-MM'))
         endIndex = this.columns.findIndex(i => i.key === filterDate(new Date(item[this.replaceKey.end]), 'YYYY-MM'))
-      }else if(this.dateUnit === 'day'){
+      }else if(store.getter('dateUnit') === 'day'){
         startIndex = this.columns.findIndex(i => i.key === filterDate(new Date(item[this.replaceKey.start]), 'YYYY-MM-DD'))
         endIndex = this.columns.findIndex(i => i.key === filterDate(new Date(item[this.replaceKey.end]), 'YYYY-MM-DD'))
       }

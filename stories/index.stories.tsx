@@ -9,7 +9,8 @@ import React, { useState, useEffect } from 'react';
 import { Gantter } from '@/index'
 
 export const YourStory = () => {
-  const [data, setData] = useState([])
+  const [data, setData] = useState<any[]>([])
+  const [pageData, setPageData] = useState<any[]>([])
 
   useEffect(() => {
     fetch('https://txj61.github.io/gantter-g/data.json').then(async res => {
@@ -28,55 +29,62 @@ export const YourStory = () => {
       }))
     })
   }, [])
+  useEffect(() => {
+    if(data){
+      setPageData(data.slice(0, 30))
+    }
+  }, [data])
   return (
-    <Gantter
-      width={1400}
-      columns={[
-        { key: 'staffName', name: '姓名', width: 200 },
-        { key: 'staffDepartName', name: '部门', width: 300 },
-        // { key: 'jobs', name: '职位', width: 200 },
-        // { key: 'userStatus_dictText', name: '状态', width: 100 }
-      ]}
-      dataSource={data}
-      gantterReplaceKeys={{
-        list: 'distribution',
-        title: 'name'
-      }}
-      tooltip={{
-        formatter: value => ([
-          {
-            text: value.name,
-            style: {
-              fontSize: 14,
-              fontWeight: 'bold'
+    <>
+      <Gantter
+        columns={[
+          { key: 'staffName', name: '姓名', width: 200 },
+          { key: 'staffDepartName', name: '部门', width: 300 },
+          // { key: 'jobs', name: '职位', width: 200 },
+          // { key: 'userStatus_dictText', name: '状态', width: 100 }
+        ]}
+        dataSource={pageData}
+        gantterReplaceKeys={{
+          list: 'distribution',
+          title: 'name'
+        }}
+        tooltip={{
+          formatter: value => ([
+            {
+              text: value.name,
+              style: {
+                fontSize: 14,
+                fontWeight: 'bold'
+              }
+            },
+            {
+              text: `${value.start} - ${value.end}`,
+              style: {
+                fontSize: 14
+              }
+            },
+            {
+              text: `周期：${(new Date(value.end).getTime() - new Date(value.start).getTime()) / (1000 * 3600 * 24)}天`,
+              style: {
+                fontSize: 14
+              }
             }
-          },
-          {
-            text: `${value.start} - ${value.end}`,
-            style: {
-              fontSize: 14
-            }
-          },
-          {
-            text: `周期：${(new Date(value.end).getTime() - new Date(value.start).getTime()) / (1000 * 3600 * 24)}天`,
-            style: {
-              fontSize: 14
-            }
-          }
-        ])
-      }}
-      gantterBarText={{
-        show: false,
-        formatter: value =>({
-          text: value.name
-        })
-      }}
-      theme={{
-        gantterStopColor: '#ececec',
-        gantterProgressColor: '#64e25e',
-        gantterUnbeginColor: '#4eacfd'
-      }}
-    />
+          ])
+        }}
+        gantterBarText={{
+          show: true,
+          formatter: value =>({
+            text: value.name
+          })
+        }}
+        theme={{
+          gantterStopColor: '#ececec',
+          gantterProgressColor: '#64e25e',
+          gantterUnbeginColor: '#4eacfd'
+        }}
+      />
+    </>
+
   )
 }
 

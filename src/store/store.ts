@@ -16,7 +16,7 @@ import type { Canvas as ICanvas } from '@antv/g'
 export interface IState {
   theme: ITheme
   styles: IStyles
-  dateUnit: IDateUnit
+  dateUnit?: IDateUnit
   showOrder: boolean | string
   gantterReplaceKeys: Required<IGantterReplaceKeys>
   popover?: IPopover
@@ -40,7 +40,6 @@ class Store {
       content: 'content',
       color: ''
     },
-    dateUnit: 'day',
     showOrder: true,
     events: {},
     tooltip: {

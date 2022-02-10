@@ -69,10 +69,8 @@ export const dateUnit = (start: Required<IGantterReplaceKeys>['start'], end: Req
   const rangeDays: number = (new Date(end).getTime() - new Date(start).getTime()) / 1000 / 60 /60 / 24
   if(rangeDays > 365 * 4){
     return 'year'
-  }else if(rangeDays > 30 * 2){
+  }else if(rangeDays > 12){
     return 'month'
-  }else if(rangeDays > 7 * 2){
-    return 'week'
   }else{
     return 'day'
   }

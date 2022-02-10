@@ -5,14 +5,15 @@
  * @LastEditors: Anthan
  * @Description:
  */
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Canvas } from '@antv/g'
 import { Renderer } from '@antv/g-canvas'
 import { Layout } from '@/core'
 import { ITheme } from '@/theme/interface'
 import { IStyles } from '@/styles/interface'
-import { IGantterReplaceKeys, IColumn, IData, ITooltip, IGantterBarText } from '@/common/interface'
+import { IGantterReplaceKeys, IColumn, IData, ITooltip, IGantterBarText, IDateUnit } from '@/common/interface'
 import store from '@/store'
+import { Select } from '@/components'
 
 interface Props{
   dataSource?: IData[]
@@ -29,6 +30,8 @@ interface Props{
 
 export default (props: Props) => {
   const { theme, styles, width, height, columns, dataSource, gantterReplaceKeys, showOrder, tooltip, gantterBarText } = props
+  const [dateUnit, setDateUnit] = useState<IDateUnit>()
+
   useEffect(() => {
     store.setter('theme', theme ? {
       ...store.state.theme,
@@ -50,14 +53,14 @@ export default (props: Props) => {
 
     const canvas = new Canvas({
       container: 'gantter-g-view',
-      width: Number(width) || styles?.defaultWidth || 1000,
+      width: Number(width) || document.getElementById('gantter-g-view')?.offsetWidth || styles?.defaultWidth || 1000,
       height: Number(height) || styles?.defaultHeight || 500,
       renderer: new Renderer()
     })
     store.setter('container', canvas)
 
     const layout = new Layout({
-      width: Number(width) || styles?.defaultWidth || 1000,
+      width: Number(width) || document.getElementById('gantter-g-view')?.offsetWidth || styles?.defaultWidth || 1000,
       height: Number(height) || styles?.defaultHeight || 500,
       columns: columns,
       data: dataSource,
@@ -65,11 +68,26 @@ export default (props: Props) => {
     })
 
     canvas.appendChild(layout)
-
-  }, [props.dataSource])
+    setDateUnit(store.getter('dateUnit'))
+  }, [props.dataSource, dateUnit])
 
   return (
     <div>
+      <div style={{
+        width: `${width}px`,
+        height: '30px',
+        padding: '8px 0',
+        display: 'flex',
+      }}>
+        <Select defaultValue={dateUnit} options={[
+          { value: 'day', label: '日' },
+          { value: 'month', label: '月' },
+          { value: 'year', label: '年' },
+        ]} onChange={(value) => {
+          store.setter('dateUnit', value?.value as IDateUnit)
+          setDateUnit(store.getter('dateUnit'))
+        }} />
+      </div>
       <div id="gantter-g-view" />
     </div>
   )

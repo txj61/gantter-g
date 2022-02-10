@@ -63,8 +63,8 @@ export default class GantterTable extends Group {
     this.height = this.style.clipPath.style.height
     this.popover = popover
 
-    store.setter('dateUnit', dateUnit(this.totalRangeDate[0], this.totalRangeDate[1]))
-    this.unit = store.getter('dateUnit')
+    store.setter('dateUnit', store.getter('dateUnit') ?? dateUnit(this.totalRangeDate[0], this.totalRangeDate[1]))
+    this.unit = store.getter('dateUnit') || 'month'
 
     const dateArr: string[] = gantterColumns(this.totalRangeDate[0], this.totalRangeDate[1], this.unit)
     this.cellWidth = dateArr.length * this.cellWidth > this.width ? this.cellWidth : this.width / dateArr.length
@@ -295,12 +295,9 @@ export default class GantterTable extends Group {
   }
 
   private wheelEvent(event: any) {
-    if (this.tableScrollTop >= 0 && event.deltaY < 0) {
+    if (this.tableScrollTop >= event.deltaY) {
       this.tableScrollTop = 0;
-    } else if (
-      this.tableScrollTop <= -(this.totalHeight - this.content.style.clipPath.style.height) &&
-      event.deltaY > 0
-    ) {
+    } else if (this.tableScrollTop <= -(this.totalHeight - this.content.style.clipPath.style.height) + event.deltaY) {
       this.tableScrollTop = -(this.totalHeight - this.content.style.clipPath.style.height);
     } else {
       this.tableScrollTop -= event.deltaY / 2;
