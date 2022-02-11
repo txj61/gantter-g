@@ -96,13 +96,19 @@ export default () => {
 ## API
 参数|说明|类型|默认值
 --|:--:|--:|--:
-columns|表头|array|-
-dataSource|数据数组|array|-
+columns|表头|object[]|-
+dataSource|数据数组|object[]|-
 showOrder|是否显示序号|Boolean|true
 gantterReplaceKeys|进度替换字段|object|如下
 tooltip|提示框|object|如下
 gantterBarText|进度条上文字|object|如下
 theme|主题设置|object|如下
+### columns
+参数|说明|类型|默认值
+--|:--:|--:|--:
+key|唯一标识|string|必填
+name|名称|string|必填
+width|列宽|number|100
 
 ### gantterReplaceKeys
 参数|说明|类型|默认值
