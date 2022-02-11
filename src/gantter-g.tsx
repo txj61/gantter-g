@@ -79,9 +79,9 @@ export default (props: Props) => {
         display: 'flex',
       }}>
         <Select defaultValue={dateUnit} options={[
-          { value: 'day', label: '日' },
-          { value: 'month', label: '月' },
-          { value: 'year', label: '年' },
+          { value: 'day', label: '按日' },
+          { value: 'month', label: '按月' },
+          { value: 'year', label: '按年' },
         ]} onChange={(value) => {
           store.setter('dateUnit', value?.value as IDateUnit)
           setDateUnit(store.getter('dateUnit'))
