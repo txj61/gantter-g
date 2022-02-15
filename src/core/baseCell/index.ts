@@ -6,7 +6,8 @@
  * @Description:表格单元格
  */
 import { Group, Rect, Line, Text, RectStyleProps, TextStyleProps } from '@antv/g'
-import { IProps } from './interface'
+import type { Rect as IRect, Text as IText } from '@antv/g'
+import { IProps, IEmitEvent } from './interface'
 import { ILine } from '../../common/interface'
 import { styles, theme } from '../../store'
 
@@ -30,6 +31,10 @@ export default class BaseCell extends Group {
     padding: styles.tableCellPadding ?? 0,
   }
 
+  private rectCell!: IRect
+
+  private text!: IText
+
   private leftborder: ILine = {
     lineWidth: 0,
     borderColor: theme.tableColDividerColor || theme.borderColor
@@ -50,6 +55,11 @@ export default class BaseCell extends Group {
     borderColor: theme.tableRowDividerColor || theme.borderColor
   }
 
+  private _emitEvents: IEmitEvent = {
+    onMouseOver: undefined,
+    onMouseOut: undefined
+  };
+
   constructor({ style, rectStyle, textStyle, leftBorder, rightBorder, topBorder, bottomBorder }: IProps = {}){
     super({ style })
 
@@ -69,13 +79,21 @@ export default class BaseCell extends Group {
     this.renderCell()
     this.renderBorder()
     this.renderText()
+    this.bindEvent()
+  }
 
+  public emitEvent(
+    eventName: keyof IEmitEvent,
+    event: IEmitEvent[keyof IEmitEvent],
+  ) {
+    this._emitEvents[eventName] = event;
   }
 
   private renderCell(){
-    this.appendChild(new Rect({
+    this.rectCell = new Rect({
       style: this.rectStyle
-    }))
+    })
+    this.appendChild(this.rectCell)
   }
 
   private renderText(){
@@ -85,7 +103,7 @@ export default class BaseCell extends Group {
       x = this.rectStyle.width / 2 - (this.textStyle.padding || 0)
       clipX = -(this.rectStyle.width / 2 - (this.textStyle.padding || 0))
     }
-    this.appendChild(new Text({
+    this.text = new Text({
       style: {
         ...this.textStyle,
         x,
@@ -99,7 +117,8 @@ export default class BaseCell extends Group {
           }
         })
       }
-    }))
+    })
+    this.appendChild(this.text)
   }
 
   private renderBorder(){
@@ -154,5 +173,28 @@ export default class BaseCell extends Group {
         }
       }))
     }
+  }
+
+  private bindEvent(){
+    this.addEventListener('mouseover', (event) => {
+      if (this._emitEvents.onMouseOver) {
+        this._emitEvents.onMouseOver({
+          ...event,
+          detail: {
+            text: this.textStyle.text,
+          }
+        });
+      }
+    })
+    this.addEventListener('mouseout', (event) => {
+      if (this._emitEvents.onMouseOut) {
+        this._emitEvents.onMouseOut({
+          ...event,
+          detail: {
+            text: this.textStyle.text,
+          }
+        });
+      }
+    })
   }
 }

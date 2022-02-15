@@ -44,7 +44,7 @@ export default class Layout extends Group {
     const columnsWidth: number = columns?.reduce((total, item) => {
       return total + (item.width ?? store.getter('styles').tableCellWidth)
     }, 0) ?? width / 2
-    store.setter('dragX', columnsWidth > width / 2 ? width / 2 : columnsWidth + (store.getter('showOrder') ? (store.getter('styles').tableOrderCellWidth ?? 0) : 0))
+    store.setter('dragX', columnsWidth > width * .4 ? width * .4 : columnsWidth + (store.getter('showOrder') ? (store.getter('styles').tableOrderCellWidth ?? 0) : 0))
 
     // 左侧表格
     this.baseTable = new BaseTable({

@@ -5,12 +5,12 @@
  * @LastEditors: Anthan
  * @Description:左侧表格
  */
-import { Group, Rect } from '@antv/g';
-import type { Group as IGroup } from '@antv/g';
+import { Group, Rect, Text } from '@antv/g';
+import type { Group as IGroup, Rect as IRect } from '@antv/g';
 import { IProps, IEmitEvent } from './interface';
 import { IColumn, IData, ISize } from '../../common/interface'
 import { BaseRow, BaseHeader, ScrollBar } from '../';
-import store, { styles } from '../../store';
+import store, { styles, theme } from '../../store';
 import type { BaseRow as IBaseRow, BaseHeader as IBaseHeader, ScrollBar as IScrollBar } from '../'
 
 export default class BaseTable extends Group {
@@ -46,6 +46,8 @@ export default class BaseTable extends Group {
 
   private orderCellWidth: number = styles.tableOrderCellWidth || 50
 
+  private tooltip!: IRect
+
   private _emitEvents: IEmitEvent = {
     onScroll: undefined,
   };
@@ -64,7 +66,8 @@ export default class BaseTable extends Group {
 
     this.renderRows();
     this.renderHeader();
-    this.renderScrollBar()
+    this.renderScrollBar();
+    this.renderTooltip();
 
     this.bindEvent();
   }
@@ -153,7 +156,7 @@ export default class BaseTable extends Group {
           ] : this.columns,
           data: this.showOrder ? {
             ...item,
-            [this.showOrder === true ? 'id' : this.showOrder]: index.toString()
+            [this.showOrder === true ? 'id' : this.showOrder]: (index + 1).toString()
           } : item,
           isOdd: Boolean(index % 2),
           style: {
@@ -183,11 +186,66 @@ export default class BaseTable extends Group {
     })
   }
 
+  private renderTooltip(params?: {text?: string, x?: number, y?: number}){
+    if(!this.tooltip){
+      this.tooltip = new Rect({
+        style: {
+          width: styles.popoverWidth,
+          height: 50,
+          fill: theme.popoverBackground,
+          shadowBlur: styles.popoverShadowBlur,
+          shadowColor: theme.popoverShadowColor,
+          radius: styles.popoverRadius
+        }
+      })
+      this.tooltip.hide()
+      this.appendChild(this.tooltip)
+
+      this.tooltip.appendChild(new Text({
+        style: {
+          text: params?.text || '',
+          textBaseline: 'top',
+          textAlign: 'left',
+          padding: styles.popoverPadding,
+          wordWrapWidth: styles.popoverWidth - styles.popoverTextPadding * 2,
+          wordWrap: true
+        }
+      }))
+    }else{
+      const text = this.tooltip.childNodes.find(item => item instanceof Text) as Text
+      text.style.text = params?.text || ''
+      this.tooltip.style.x = params?.x
+      this.tooltip.style.y = params?.y
+      this.tooltip.style.height = text.getBoundingClientRect().height + styles.popoverTextPadding * 2
+    }
+  }
+
   private bindEvent() {
     this.content.addEventListener('wheel', this.wheelEvent.bind(this));
+    this.scrollContent.childNodes.forEach(item => {
+      if(item instanceof BaseRow){
+        item.emitEvent('onCellMouseOver', (event: any) => {
+          if(event.detail.column.tooltip){
+            this.tooltip.show()
+            this.renderTooltip({
+              text: event.detail.text,
+              x: event.offset.x - this.tooltip.style.width / 2,
+              y: event.offset.y - this.tooltip.style.height * 1.5
+            })
+          }
+        })
+        item.emitEvent('onCellMouseOut', () => {
+          this.tooltip.hide()
+        })
+      }
+    })
   }
 
   private wheelEvent(event: any) {
+    if(this.content.style.clipPath.style.height >= this.totalHeight) {
+      this.tableScrollTop = 0;
+      return
+    }
     if (this.tableScrollTop >= event.deltaY) {
       this.tableScrollTop = 0;
     } else if (this.tableScrollTop <= -(this.totalHeight - this.content.style.clipPath.style.height) + event.deltaY) {

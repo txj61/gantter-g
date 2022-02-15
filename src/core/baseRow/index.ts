@@ -7,7 +7,7 @@
  */
 import { Group, Line } from '@antv/g'
 import { BaseCell } from '../'
-import { IProps } from './interface'
+import { IProps, IEmitEvent } from './interface'
 import { ILine, IColumn } from '../../common/interface'
 import { theme, styles } from '../../store'
 
@@ -41,6 +41,11 @@ export default class BaseRow extends Group {
     borderColor: theme.tableRowDividerColor || theme.borderColor
   }
 
+  private _emitEvents: IEmitEvent = {
+    onCellMouseOver: undefined,
+    onCellMouseOut: undefined
+  };
+
   constructor({ columns, data, style, isOdd, topBorder, bottomborder }: IProps){
     super({ style })
 
@@ -51,7 +56,14 @@ export default class BaseRow extends Group {
     this.bottomborder = bottomborder ?? this.bottomborder
 
     this.renderRow()
+    this.bindEvent()
+  }
 
+  public emitEvent(
+    eventName: keyof IEmitEvent,
+    event: IEmitEvent[keyof IEmitEvent],
+  ) {
+    this._emitEvents[eventName] = event;
   }
 
   public renderRow(){
@@ -101,5 +113,28 @@ export default class BaseRow extends Group {
         }
       }))
     }
+  }
+
+  private bindEvent(){
+    this.childNodes.forEach((item, index) => {
+      if(item instanceof BaseCell){
+        item.emitEvent('onMouseOver', (event) => {
+          if (this._emitEvents.onCellMouseOver) {
+            this._emitEvents.onCellMouseOver({
+              ...event,
+              detail: {
+                ...event.detail,
+                column: this.columns[index]
+              }
+            });
+          }
+        })
+        item.emitEvent('onMouseOut', event => {
+          if (this._emitEvents.onCellMouseOut) {
+            this._emitEvents.onCellMouseOut(event);
+          }
+        })
+      }
+    })
   }
 }

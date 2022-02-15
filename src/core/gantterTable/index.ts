@@ -295,6 +295,10 @@ export default class GantterTable extends Group {
   }
 
   private wheelEvent(event: any) {
+    if(this.content.style.clipPath.style.height >= this.totalHeight) {
+      this.tableScrollTop = 0;
+      return
+    }
     if (this.tableScrollTop >= event.deltaY) {
       this.tableScrollTop = 0;
     } else if (this.tableScrollTop <= -(this.totalHeight - this.content.style.clipPath.style.height) + event.deltaY) {

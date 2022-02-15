@@ -31,7 +31,7 @@ export const YourStory = () => {
   }, [])
   useEffect(() => {
     if(data){
-      setPageData(data.slice(0, 30))
+      setPageData(data.slice(0, 10))
     }
   }, [data])
   return (
@@ -39,9 +39,9 @@ export const YourStory = () => {
       <Gantter
         columns={[
           { key: 'staffName', name: '姓名', width: 200 },
-          { key: 'staffDepartName', name: '部门', width: 300 },
-          // { key: 'jobs', name: '职位', width: 200 },
-          // { key: 'userStatus_dictText', name: '状态', width: 100 }
+          { key: 'staffDepartName', name: '部门', width: 300, tooltip: true },
+          { key: 'jobs', name: '职位', width: 200 },
+          { key: 'userStatus_dictText', name: '状态', width: 100 }
         ]}
         dataSource={pageData}
         gantterReplaceKeys={{

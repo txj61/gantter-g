@@ -23,3 +23,12 @@ export interface IProps {
   topBorder?: IBorder
   bottomBorder?: IBorder
 }
+
+export interface IMouseOverParams extends Event {
+  detail: { text: string, [key: string]: any }
+}
+
+export interface IEmitEvent {
+  onMouseOver?: (params: IMouseOverParams) => void;
+  onMouseOut?: (params: IMouseOverParams) => void
+}

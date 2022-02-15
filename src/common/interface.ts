@@ -38,6 +38,7 @@ export interface IColumn {
   key: string
   name: string
   width?: number
+  tooltip?: boolean
 }
 
 export interface IGantterItem{

@@ -20,6 +20,10 @@
     "new": "modern new",
     "test": "modern test --passWithNoTests"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/txj61/gantter-g"
+  },
   "engines": {
     "node": ">=14.17.6"
   },
