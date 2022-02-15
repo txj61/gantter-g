@@ -109,6 +109,7 @@ theme|主题设置|object|如下
 key|唯一标识|string|必填
 name|名称|string|必填
 width|列宽|number|100
+tooltip|是否显示提示|boolean|false
 
 ### gantterReplaceKeys
 参数|说明|类型|默认值
