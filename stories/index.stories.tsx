@@ -31,7 +31,7 @@ export const YourStory = () => {
   }, [])
   useEffect(() => {
     if(data){
-      setPageData(data.slice(0, 10))
+      setPageData(data.slice(0, 50))
     }
   }, [data])
   return (
@@ -43,7 +43,7 @@ export const YourStory = () => {
           { key: 'jobs', name: '职位', width: 200 },
           { key: 'userStatus_dictText', name: '状态', width: 100 }
         ]}
-        dataSource={pageData}
+        dataSource={data}
         gantterReplaceKeys={{
           list: 'distribution',
           title: 'name'

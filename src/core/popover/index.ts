@@ -41,9 +41,9 @@ export default class Popover extends Group {
       this.style.x = v.x + v.width / 2 - styles.popoverWidth / 2
     }
 
-    if(v.y < this.height){
+    if(v.y < this.height + 15 + 6){
       this.style.y = v.y + v.height + 15
-      this.backgroundRect.setAttribute('y', 6)
+      this.backgroundRect.setAttribute('y', -6)
     }else{
       this.style.y = v.y - this.height - 15
       this.backgroundRect.setAttribute('y', -6)
