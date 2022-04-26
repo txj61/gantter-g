@@ -7,8 +7,10 @@
  */
 import React, { useEffect, useState } from 'react'
 import { Canvas } from '@antv/g'
+import type { Canvas as ICanvas } from '@antv/g'
 import { Renderer } from '@antv/g-canvas'
 import { Layout } from './core'
+import type { Layout as ILayout } from './core'
 import { ITheme } from './theme/interface'
 import { IStyles } from './styles/interface'
 import { IGantterReplaceKeys, IColumn, IData, ITooltip, IGantterBarText, IDateUnit } from './common/interface'
@@ -26,11 +28,15 @@ interface Props{
   showOrder?: boolean | string
   tooltip?: ITooltip
   gantterBarText?: IGantterBarText
+  loading?: boolean
 }
 
-export default (props: Props) => {
-  const { theme, styles, width, height, columns, dataSource, gantterReplaceKeys, showOrder, tooltip, gantterBarText } = props
-  const [dateUnit, setDateUnit] = useState<IDateUnit>()
+let canvas: ICanvas
+let layout: ILayout
+
+export default React.memo((props: Props) => {
+  const { theme, styles, width, height, columns, dataSource, gantterReplaceKeys, showOrder, tooltip, gantterBarText, loading } = props
+  const [dateUnit, setDateUnit] = useState<IDateUnit>(store.getter('dateUnit') || 'month')
 
   useEffect(() => {
     store.setter('theme', theme ? {
@@ -51,7 +57,7 @@ export default (props: Props) => {
       ...gantterBarText
     })
 
-    const canvas = new Canvas({
+    canvas = new Canvas({
       container: 'gantter-g-view',
       width: Number(width) || document.getElementById('gantter-g-view')?.offsetWidth || styles?.defaultWidth || 1000,
       height: Number(height) || styles?.defaultHeight || 500,
@@ -59,17 +65,16 @@ export default (props: Props) => {
     })
     store.setter('container', canvas)
 
-    const layout = new Layout({
+    layout = new Layout({
       width: Number(width) || document.getElementById('gantter-g-view')?.offsetWidth || styles?.defaultWidth || 1000,
       height: Number(height) || styles?.defaultHeight || 500,
       columns: columns,
       data: dataSource,
-      gantterReplaceKeys: gantterReplaceKeys
+      gantterReplaceKeys,
+      loading
     })
-
     canvas.appendChild(layout)
-    setDateUnit(store.getter('dateUnit'))
-  }, [props.dataSource, dateUnit])
+  }, [dataSource, dateUnit, loading])
 
   return (
     <div>
@@ -82,12 +87,12 @@ export default (props: Props) => {
           { value: 'day', label: '按日' },
           { value: 'month', label: '按月' },
           { value: 'year', label: '按年' },
-        ]} onChange={(value) => {
+        ]} onChange={value => {
           store.setter('dateUnit', value?.value as IDateUnit)
-          setDateUnit(store.getter('dateUnit'))
+          setDateUnit(value?.value as IDateUnit)
         }} />
       </div>
       <div id="gantter-g-view" />
     </div>
   )
-}
+}, () => false)

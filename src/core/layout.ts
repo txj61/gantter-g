@@ -7,8 +7,8 @@
  */
 
 import { Group, Rect, BaseStyleProps } from '@antv/g';
-import { BaseTable, ScrollBar, GantterTable , DragDivider, Popover } from './';
-import type { BaseTable as IBaseTable, ScrollBar as IScrollBar, GantterTable as IGantterTable, DragDivider as IDragDivider, Popover as IPopover } from './';
+import { BaseTable, ScrollBar, GantterTable , DragDivider, Popover, Loading } from './';
+import type { BaseTable as IBaseTable, ScrollBar as IScrollBar, GantterTable as IGantterTable, DragDivider as IDragDivider, Popover as IPopover, Loading as ILoading } from './';
 import { IColumn } from '../common/interface';
 import store, { styles, theme } from '../store';
 import { IGantterReplaceKeys } from '../common/interface'
@@ -20,10 +20,11 @@ interface IProps {
   data?: { [key: string]: any }[];
   style?: BaseStyleProps;
   gantterReplaceKeys?: IGantterReplaceKeys
+  loading?: boolean
 }
 
 export default class Layout extends Group {
-  private baseTable: IBaseTable;
+  private baseTable!: IBaseTable;
 
   private scrollbar!: IScrollBar;
 
@@ -33,7 +34,9 @@ export default class Layout extends Group {
 
   private popover!: IPopover
 
-  constructor({ width, height, columns, data, style, gantterReplaceKeys }: IProps) {
+  private loading!: ILoading
+
+  constructor({ width, height, columns, data, style, gantterReplaceKeys, loading }: IProps) {
     super({ style });
 
     store.setter('gantterReplaceKeys', {
@@ -46,6 +49,10 @@ export default class Layout extends Group {
     }, 0) ?? width / 2
     store.setter('dragX', columnsWidth > width * .4 ? width * .4 : columnsWidth + (store.getter('showOrder') ? (store.getter('styles').tableOrderCellWidth ?? 0) : 0))
 
+    this.render({ width, height, columns, data, style, gantterReplaceKeys, loading })
+  }
+
+  render({ width, height, columns, data, loading }: IProps){
     // 左侧表格
     this.baseTable = new BaseTable({
       columns,
@@ -67,7 +74,7 @@ export default class Layout extends Group {
 
     // 气泡卡片
     this.popover = new Popover({
-      zIndex: 9999
+      zIndex: 100
     })
     this.popover.hide()
 
@@ -92,26 +99,28 @@ export default class Layout extends Group {
       this.baseTable.tableScrollTop = positonY;
     })
 
-    // 竖向滚动条
-    this.scrollbar = new ScrollBar({
-      scrollAreaLength: this.baseTable.tableScrollHeight,
-      scrollTotalLength: this.baseTable.totalHeight,
-      style: {
-        x: width - styles.scrollWeight,
-        y: this.baseTable.headerHeight
-      },
-    });
-    this.appendChild(this.scrollbar);
-    this.scrollbar.emitEvent('onScroll', ({ positonY }) => {
-      this.baseTable.tableScrollTop = positonY;
-      this.gantterTable.tableScrollTop = positonY
-    });
+    if(data && data.length){
+      // 竖向滚动条
+      this.scrollbar = new ScrollBar({
+        scrollAreaLength: this.baseTable.tableScrollHeight,
+        scrollTotalLength: this.baseTable.totalHeight,
+        style: {
+          x: width - styles.scrollWeight,
+          y: this.baseTable.headerHeight
+        },
+      });
+      this.appendChild(this.scrollbar);
+      this.scrollbar.emitEvent('onScroll', ({ positonY }) => {
+        this.baseTable.tableScrollTop = positonY;
+        this.gantterTable.tableScrollTop = positonY
+      });
+    }
 
     // 拖动条
     this.dragDivider = new DragDivider({
       style: {
         width: styles.dragWeight,
-        height: styles.defaultHeight,
+        height: data && data.length ? styles.defaultHeight : this.baseTable.headerHeight,
         x: store.getter('dragX'),
         fill: theme.dragDividerColor,
         cursor: 'col-resize'
@@ -126,5 +135,15 @@ export default class Layout extends Group {
     })
 
     this.appendChild(this.popover)
+
+    if(loading){
+      this.loading = new Loading({
+        style: {
+          width,
+          height
+        }
+      })
+      this.appendChild(this.loading)
+    }
   }
 }

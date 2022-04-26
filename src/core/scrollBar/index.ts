@@ -19,7 +19,7 @@ export default class ScrollBar extends Group {
   private _scrollAreaLength!: number;
 
   // 滚动内容总长（高）
-  private readonly _scrollTotalLength!: number;
+  private _scrollTotalLength!: number;
 
   // 滚动内容所在相对位置
   private _position: number = 0;
@@ -109,11 +109,11 @@ export default class ScrollBar extends Group {
   }
 
   public set scrollTotalLength(v: number) {
-    this._scrollAreaLength = v;
+    this._scrollTotalLength = v;
   }
 
   public get scrollTotalLength(): number {
-    return this._scrollAreaLength;
+    return this._scrollTotalLength;
   }
 
   public set position(v: number) {

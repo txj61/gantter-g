@@ -39,7 +39,10 @@ const baseTheme: ITheme = {
   gantterbarLineColor: '#cccccc',
 
   popoverBackground: '#ffffff',
-  popoverShadowColor: '#999999'
+  popoverShadowColor: '#999999',
+
+  loadingBackgroundColor: 'rgba(255, 255, 255, .4)',
+  loadingColor: '#bae7ff'
 }
 
 export default baseTheme

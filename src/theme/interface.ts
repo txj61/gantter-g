@@ -62,4 +62,9 @@ export interface ITheme {
   readonly popoverBackground?: string
   // 气泡卡片阴影颜色
   readonly popoverShadowColor?: string
+
+  // loading背景颜色
+  readonly loadingBackgroundColor?: string
+  // loading颜色
+  readonly loadingColor?: string
 }

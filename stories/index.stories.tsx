@@ -11,9 +11,11 @@ import { Gantter } from '@/index'
 export const YourStory = () => {
   const [data, setData] = useState<any[]>([])
   const [pageData, setPageData] = useState<any[]>([])
+  const [loading, setLoading] = useState<boolean>(true)
 
   useEffect(() => {
     fetch('https://txj61.github.io/gantter-g/data.json').then(async res => {
+      setLoading(false)
       setData((await res.json()).data.map((item: any) => {
         try{
           return {
@@ -31,12 +33,17 @@ export const YourStory = () => {
   }, [])
   useEffect(() => {
     if(data){
-      setPageData(data.slice(0, 50))
+      setPageData(data.slice(0, 10))
     }
   }, [data])
+
   return (
     <>
+      <a onClick={() => {
+        setLoading(true)
+      }}>刷新</a>
       <Gantter
+        loading={loading}
         columns={[
           { key: 'staffName', name: '姓名', width: 200 },
           { key: 'staffDepartName', name: '部门', width: 300, tooltip: true },
