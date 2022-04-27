@@ -1,4 +1,4 @@
-import store from '@/store'
+import store from '../../store'
 import { Rect, Circle, Group } from '@antv/g'
 import type { Circle as ICircle, Group as IGroup } from '@antv/g'
 import { IProps } from './interface'
