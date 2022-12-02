@@ -1,6 +1,6 @@
 {
   "name": "gantter-g",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "jsnext:source": "./src/index.ts",
   "types": "./dist/types/index.d.ts",
   "main": "./dist/js/node/index.js",
@@ -53,8 +53,8 @@
     "dist/"
   ],
   "dependencies": {
-    "@antv/g": "^5.0.9",
-    "@antv/g-canvas": "^1.0.7",
+    "@antv/g": "5.0.9",
+    "@antv/g-canvas": "1.0.7",
     "@babel/runtime": "^7"
   },
   "peerDependencies": {
